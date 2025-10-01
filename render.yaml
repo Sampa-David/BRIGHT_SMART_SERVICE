@@ -2,7 +2,7 @@
 services:
   - type: web
     name: bright-smart-service
-    env: php
+    runtime: php
     buildCommand: composer install && npm install && npm run build
     startCommand: php artisan serve --host 0.0.0.0 --port $PORT
     plan: free
@@ -19,31 +19,21 @@ services:
         value: pgsql
       - key: DB_HOST
         fromService:
-          type: pserv
           name: bright-smart-db
+          type: postgresql
           property: host
       - key: DB_PORT
         fromService:
-          type: pserv
           name: bright-smart-db
+          type: postgresql
           property: port
       - key: DB_DATABASE
-        fromService:
-          type: pserv
-          name: bright-smart-db
-          property: database
+        value: bright_smart_db
       - key: DB_USERNAME
-        fromService:
-          type: pserv
-          name: bright-smart-db
-          property: user
+        sync: false
       - key: DB_PASSWORD
-        fromService:
-          type: pserv
-          name: bright-smart-db
-          property: password
+        sync: false
 
-  - type: pserv
+  - type: postgresql
     name: bright-smart-db
     plan: free
-    ipAllowList: []
