@@ -1,11 +1,14 @@
-# Blueprint for Render deployment
+# Render deployment blueprint for Laravel + PostgreSQL
 services:
   - type: web
     name: bright-smart-service
-    runtime: php
-    buildCommand: composer install && npm install && npm run build
-    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+    env: php
     plan: free
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      npm install
+      npm run build
+    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
     envVars:
       - key: APP_NAME
         value: BRIGHT_SMART_SERVICE
@@ -20,20 +23,27 @@ services:
       - key: DB_HOST
         fromService:
           name: bright-smart-db
-          type: postgresql
+          type: postgres
           property: host
       - key: DB_PORT
         fromService:
           name: bright-smart-db
-          type: postgresql
+          type: postgres
           property: port
       - key: DB_DATABASE
         value: bright_smart_db
       - key: DB_USERNAME
-        sync: false
+        fromService:
+          name: bright-smart-db
+          type: postgres
+          property: user
       - key: DB_PASSWORD
-        sync: false
+        fromService:
+          name: bright-smart-db
+          type: postgres
+          property: password
 
-  - type: postgresql
+  - type: postgres
     name: bright-smart-db
     plan: free
+    databaseName: bright_smart_db
