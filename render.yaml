@@ -1,3 +1,4 @@
+# Blueprint for Render deployment
 services:
   - type: web
     name: bright-smart-service
@@ -14,22 +15,35 @@ services:
         value: false
       - key: APP_KEY
         generateValue: true
-      - key: APP_URL
-        sync: false
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
-        sync: false
+        fromService:
+          type: pserv
+          name: bright-smart-db
+          property: host
       - key: DB_PORT
-        sync: false
+        fromService:
+          type: pserv
+          name: bright-smart-db
+          property: port
       - key: DB_DATABASE
-        sync: false
+        fromService:
+          type: pserv
+          name: bright-smart-db
+          property: database
       - key: DB_USERNAME
-        sync: false
+        fromService:
+          type: pserv
+          name: bright-smart-db
+          property: user
       - key: DB_PASSWORD
-        sync: false
+        fromService:
+          type: pserv
+          name: bright-smart-db
+          property: password
 
-  - type: postgres
+  - type: pserv
     name: bright-smart-db
     plan: free
     ipAllowList: []
