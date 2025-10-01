@@ -2,7 +2,7 @@
 services:
   - type: web
     name: bright-smart-service
-    runtime: php
+    runtime: php@8.1
     plan: free
     buildCommand: |
       composer install --no-dev --optimize-autoloader
@@ -44,3 +44,4 @@ databases:
     databaseName: bright_smart_db
     region: oregon
     plan: free
+    type: postgres
