@@ -44,4 +44,4 @@ databases:
     databaseName: bright_smart_db
     region: oregon
     plan: free
-    type: postgres
+    
