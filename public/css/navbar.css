@@ -1,0 +1,243 @@
+/* Navbar Styles */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 0;
+    transition: all 0.5s;
+    z-index: 997;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header.sticked {
+    background: #fff;
+    padding: 12px 0;
+}
+
+.header .logo {
+    text-decoration: none;
+}
+
+.header .logo img {
+    max-height: 40px;
+    margin-right: 6px;
+}
+
+/* Navigation Menu Styles */
+.navbar {
+    padding: 0;
+}
+
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.navbar li {
+    position: relative;
+}
+
+.navbar a,
+.navbar a:focus,
+.navbar .btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #222222;
+    white-space: nowrap;
+    transition: 0.3s;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar a i,
+.navbar a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover > a,
+.navbar .btn-logout:hover {
+    color: var(--primary-color);
+}
+
+/* Button Styles */
+.navbar .get-started-btn,
+.navbar .btn-logout {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 8px 20px;
+    margin-left: 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.navbar .get-started-btn:hover,
+.navbar .btn-logout:hover {
+    color: #fff;
+    background: var(--primary-color-dark);
+}
+
+/* Mobile Navigation */
+.mobile-nav-toggle {
+    display: none;
+    color: #222222;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 0;
+    transition: 0.5s;
+    position: fixed;
+    right: 20px;
+    top: 20px;
+}
+
+.mobile-nav-toggle.bi-x {
+    color: #fff;
+}
+
+@media (max-width: 1280px) {
+    .navbar {
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        width: 100%;
+        max-width: 400px;
+        bottom: 0;
+        transition: 0.3s;
+        z-index: 9997;
+        background: #fff;
+        box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar ul {
+        position: absolute;
+        inset: 0;
+        padding: 50px 0;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.95);
+        overflow-y: auto;
+        transition: 0.3s;
+        flex-direction: column;
+    }
+
+    .navbar a,
+    .navbar a:focus,
+    .navbar .btn-logout {
+        padding: 12px 20px;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar .get-started-btn,
+    .navbar .btn-logout {
+        margin: 15px 20px;
+    }
+
+    .mobile-nav-toggle {
+        display: block;
+    }
+
+    .navbar.mobile-nav-active {
+        right: 0;
+    }
+
+    .mobile-nav-active .mobile-nav-toggle {
+        position: fixed;
+        right: 20px;
+        top: 20px;
+    }
+}
+
+/* Scrolled Header */
+.header.sticked {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional Navigation Elements */
+.navbar .dropdown ul {
+    display: block;
+    position: absolute;
+    left: 14px;
+    top: calc(100% + 30px);
+    margin: 0;
+    padding: 10px 0;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    background: #fff;
+    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    transition: 0.3s;
+    border-radius: 4px;
+}
+
+.navbar .dropdown ul li {
+    min-width: 200px;
+}
+
+.navbar .dropdown ul a {
+    padding: 10px 20px;
+    font-size: 14px;
+    text-transform: none;
+    color: #222222;
+}
+
+.navbar .dropdown ul a i {
+    font-size: 12px;
+}
+
+.navbar .dropdown ul a:hover,
+.navbar .dropdown ul .active:hover,
+.navbar .dropdown ul li:hover > a {
+    color: var(--primary-color);
+}
+
+.navbar .dropdown:hover > ul {
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+}
+
+/* Active Link Indicator */
+.navbar .active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: 0.3s;
+}
+
+/* Logo Area */
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #222222;
+    transition: 0.3s;
+}
+
+.logo:hover {
+    color: var(--primary-color);
+}
+
+/* CSS Variables */
+:root {
+    --primary-color: #008374;
+    --primary-color-dark: #006c5e;
+    --primary-color-light: rgba(0, 131, 116, 0.1);
+    --secondary-color: #f85a40;
+}

@@ -1,0 +1,57 @@
+/* Styles du logo */
+.bright-logo {
+    max-width: 150px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.bright-logo:hover {
+    transform: scale(1.05);
+}
+
+.bright-logo-sm {
+    max-width: 50px;
+    height: auto;
+}
+
+.bright-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+}
+
+/* Version sidebar */
+.bright-logo-sidebar {
+    max-width: 100px;
+    height: auto;
+    margin: 1rem auto;
+    display: block;
+}
+
+/* Version header */
+.bright-logo-header {
+    max-width: 120px;
+    height: auto;
+    margin: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bright-logo {
+        max-width: 100px;
+    }
+    .bright-logo-header {
+        max-width: 80px;
+    }
+    .bright-logo-sidebar {
+        max-width: 60px;
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .bright-logo {
+        filter: brightness(1.2);
+    }
+}
