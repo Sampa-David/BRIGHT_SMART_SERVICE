@@ -2,13 +2,15 @@
 services:
   - type: web
     name: bright-smart-service
-    runtime: php@8.1
+    buildFilter:
+      paths:
+        - .
+      ignoredPaths:
+        - .git/**
+        - .env
+    env: docker
+    dockerfilePath: Dockerfile
     plan: free
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      npm install
-      npm run build
-    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
     envVars:
       - key: APP_NAME
         value: BRIGHT_SMART_SERVICE
@@ -44,4 +46,4 @@ databases:
     databaseName: bright_smart_db
     region: oregon
     plan: free
-    
+    type: postgres
