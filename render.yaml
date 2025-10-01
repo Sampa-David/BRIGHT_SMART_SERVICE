@@ -2,7 +2,7 @@
 services:
   - type: web
     name: bright-smart-service
-    env: php
+    runtime: php
     plan: free
     buildCommand: |
       composer install --no-dev --optimize-autoloader
