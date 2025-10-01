@@ -29,6 +29,7 @@ services:
       - key: DB_PASSWORD
         sync: false
 
-  - type: postgresql
+  - type: postgres
     name: bright-smart-db
     plan: free
+    ipAllowList: []
