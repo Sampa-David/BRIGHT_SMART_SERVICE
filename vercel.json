@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "framework": null,
+    "framework": "laravel",
     "builds": [
         {
             "src": "api/index.php",
@@ -13,8 +13,26 @@
     ],
     "routes": [
         {
-            "src": "/(css|js|images|fonts|build)/(.*)",
-            "dest": "public/$1/$2"
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/(css|js|images|fonts)/(.*)",
+            "dest": "/public/$1/$2",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
+        },
+        {
+            "src": "/robots.txt",
+            "dest": "/public/robots.txt"
         },
         {
             "src": "/(.*)",
@@ -32,6 +50,8 @@
         "DB_DATABASE": "postgres",
         "CACHE_DRIVER": "array",
         "SESSION_DRIVER": "array",
-        "QUEUE_DRIVER": "sync"
+        "QUEUE_DRIVER": "sync",
+        "LOG_CHANNEL": "errorlog",
+        "ASSET_URL": "https://bright-smart-service.vercel.app"
     }
 }
