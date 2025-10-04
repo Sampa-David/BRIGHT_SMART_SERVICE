@@ -19,6 +19,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (config('app.env') === 'production') {
+            \URL::forceScheme('https');
+            
+            // Configure SSL for PostgreSQL
+            if (config('database.default') === 'pgsql') {
+                $sslMode = config('database.connections.pgsql.sslmode', 'require');
+                config([
+                    'database.connections.pgsql.sslmode' => $sslMode
+                ]);
+            }
+        }
     }
 }
