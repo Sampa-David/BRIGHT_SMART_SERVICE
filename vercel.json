@@ -8,18 +8,14 @@
             "use": "vercel-php@0.6.0"
         },
         {
-            "src": "public/**",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "resources/views/**",
+            "src": "**",
             "use": "@vercel/static"
         }
     ],
     "routes": [
         {
-            "src": "/views/(.*)",
-            "dest": "/public/views/$1"
+            "src": "/project/(.*)",
+            "dest": "/public/project/$1"
         },
         {
             "src": "/build/(.*)",
@@ -44,7 +40,7 @@
             "dest": "/public/robots.txt"
         },
         {
-            "src": "/(.*)",
+            "src": "^/(?!project/)(.*)",
             "dest": "/api/index.php"
         }
     ],
