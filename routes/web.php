@@ -89,10 +89,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard/client', [DashboardController::class, 'clientDashboard'])->name('client.dashboard');
     });
 
-    // Routes 2FA
-    Route::post('/auth/2fa-send', [TwoFAController::class, 'sendCode'])->name('sendCode');
-    Route::post('/auth/2fa-verify', [TwoFAController::class, 'verifyCode'])->name('verifyCode');
-
     // Gestion des contacts (admin)
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/contacts', [App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contacts.index');
@@ -159,4 +155,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Routes protégées par Supabase
+Route::middleware(['supabase.auth'])->group(function () {
+    Route::get('/protected-route', 'YourController@protectedMethod');
 });

@@ -52,6 +52,13 @@
         "SESSION_DRIVER": "array",
         "QUEUE_DRIVER": "sync",
         "LOG_CHANNEL": "errorlog",
-        "ASSET_URL": "https://bright-smart-service.vercel.app"
+        "ASSET_URL": "https://bright-smart-service.vercel.app",
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "VIEW_COMPILED_PATH": "/tmp/views",
+        "SSR_TEMP_PATH": "/tmp/ssr"
     }
 }

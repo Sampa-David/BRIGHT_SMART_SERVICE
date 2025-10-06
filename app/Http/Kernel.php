@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'extend.time' => \App\Http\Middleware\ExtendExecutionTime::class,
         'role' => \App\Http\Middleware\CheckUserRole::class,
+        'supabase.auth' => \App\Http\Middleware\SupabaseAuth::class,
     ];
 
     /**
