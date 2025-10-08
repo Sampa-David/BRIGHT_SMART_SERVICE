@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set default port if not set
+export PORT=${PORT:-8000}
+
 # Start PHP-FPM
 php-fpm -D
 
