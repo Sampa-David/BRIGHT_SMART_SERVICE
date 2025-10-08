@@ -18,6 +18,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ServiceRequestController;
 
 
+// Health check route
+Route::get('/health', function() {
+    return response()->json(['status' => 'healthy'], 200);
+});
+
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/about', [PagesController::class, 'about'])->name('about');
 Route::get('/equipe', [EquipeController::class, 'index'])->name('equipe');

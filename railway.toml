@@ -1,16 +1,23 @@
 [build]
-builder = "Dockerfile"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "Dockerfile.simple"
 
 [deploy]
+startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
 healthcheckPath = "/"
-healthcheckTimeout = 300
+healthcheckTimeout = 180
 restartPolicyType = "on-failure"
-restartPolicyMaxRetries = 5
+restartPolicyMaxRetries = 3
 
 [deploy.env]
-PORT = "8000"
-APP_URL = "https://${RAILWAY_STATIC_URL}"
 APP_ENV = "production"
-PHP_MEMORY_LIMIT = "256M"
-MAX_EXECUTION_TIME = "60"
+APP_DEBUG = "false"
+APP_KEY = "base64:${RAILWAY_RANDOM_KEY}"
+APP_URL = "https://${RAILWAY_STATIC_URL}"
+ASSET_URL = "https://${RAILWAY_STATIC_URL}"
+LOG_CHANNEL = "stderr"
+DB_CONNECTION = "pgsql"
+DB_HOST = "${PGHOST}"
+DB_PORT = "${PGPORT}"
+DB_DATABASE = "${PGDATABASE}"
+DB_USERNAME = "${PGUSER}"
+DB_PASSWORD = "${PGPASSWORD}"
