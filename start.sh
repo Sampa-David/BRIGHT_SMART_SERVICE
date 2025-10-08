@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Set default port if not set
-export PORT=${PORT:-8000}
+# Wait for the environment to be ready
+sleep 2
 
 # Start PHP-FPM
 php-fpm -D
+
+# Generate application key if not set
+php artisan key:generate --force
 
 # Run database migrations
 php artisan migrate --force

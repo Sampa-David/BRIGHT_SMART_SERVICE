@@ -42,13 +42,18 @@ RUN chown -R www-data:www-data \
     /var/www/html/storage \
     /var/www/html/bootstrap/cache
 
-# Copy nginx configuration template and setup script
-COPY nginx.conf /etc/nginx/nginx.conf.template
-RUN echo '#!/bin/bash\nenvsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf\nexec "$@"' > /docker-entrypoint.sh \
+# Copy nginx configuration
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
+
+# Create entrypoint script
+RUN echo '#!/bin/bash\n\
+export PORT="${PORT:-8000}"\n\
+envsubst "\${PORT}" < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf\n\
+exec "$@"' > /docker-entrypoint.sh \
     && chmod +x /docker-entrypoint.sh
 
 # Expose port
-EXPOSE ${PORT:-8000}
+EXPOSE 8000
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
