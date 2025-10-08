@@ -3,10 +3,17 @@
 # Installer les dépendances
 composer install --no-dev --optimize-autoloader
 
+# Lier le storage
+php artisan storage:link
+
+# Générer la clé si nécessaire
+php artisan key:generate --force
+
 # Optimiser Laravel
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan optimize
 
 # Créer le dossier de sortie
 mkdir -p public/project
