@@ -1,10 +1,14 @@
 #!/bin/bash
 
 # Installer les dépendances
-composer install --no-dev --optimize-autoloader
+composer install --optimize-autoloader
 
-# Lier le storage
-php artisan storage:link
+# Installer les dépendances npm et build
+npm install
+npm run build
+
+# Copier le .env.production vers .env
+cp .env.production .env
 
 # Générer la clé si nécessaire
 php artisan key:generate --force
@@ -14,6 +18,24 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan optimize
+
+# Créer le dossier public
+mkdir -p public
+
+# Copier les fichiers nécessaires
+cp -r resources public/
+cp -r storage/app/public/* public/storage/
+cp index.php public/
+cp robots.txt public/ 2>/dev/null || :
+cp favicon.ico public/ 2>/dev/null || :
+
+# Créer le fichier .htaccess pour Netlify
+echo "RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]" > public/.htaccess
 
 # Créer le dossier de sortie
 mkdir -p public/project
