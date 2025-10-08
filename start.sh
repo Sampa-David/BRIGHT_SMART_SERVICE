@@ -1,23 +1,24 @@
 #!/bin/bash
 set -e
-# Ensure PORT is set and is an integer
+
+# Configurer le port
 export PORT=${PORT:-8000}
-if ! [[ "$PORT" =~ ^[0-9]+$ ]]; then
-  echo "Error: PORT must be an integer."
-  exit 1
+
+# Attendre la base PostgreSQL (si utilisée)
+if [ -n "$DATABASE_URL" ]; then
+  echo "⏳ Waiting for PostgreSQL to be ready..."
+  until php -r "try { new PDO(getenv('DATABASE_URL')); echo '✅ DB ready'; } catch(Exception \$e) { echo '.'; sleep(2); }"; do :; done
 fi
 
-echo "✅ Starting Laravel on port $PORT...."
+# Préparer Laravel
+echo "⚙️ Running Laravel setup..."
+php artisan key:generate --force || true
+php artisan storage:link || true
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
+php artisan migrate --force || true
 
-# Initialize Laravel
-php artisan key:generate --force
-php artisan storage:link
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-# Run migrations
-php artisan migrate --force
-
-# Start Laravel server
+# Démarrer le serveur Laravel
+echo "🚀 Starting Laravel on port $PORT"
 exec php artisan serve --host=0.0.0.0 --port=$PORT
