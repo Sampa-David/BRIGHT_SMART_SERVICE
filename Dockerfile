@@ -42,7 +42,7 @@ RUN chown -R www-data:www-data \
     bootstrap/cache
 
 # Expose port
-EXPOSE 8000
+EXPOSE ${PORT}
 
 # Make start script executable
 COPY start.sh /start.sh

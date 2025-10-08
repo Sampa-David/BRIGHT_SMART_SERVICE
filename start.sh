@@ -1,8 +1,13 @@
 #!/bin/bash
-
+set -e
 # Ensure PORT is set and is an integer
 export PORT=${PORT:-8000}
-PORT=$(($PORT + 0))  # Force integer conversion
+if ! [[ "$PORT" =~ ^[0-9]+$ ]]; then
+  echo "Error: PORT must be an integer."
+  exit 1
+fi
+
+echo "✅ Starting Laravel on port $PORT...."
 
 # Initialize Laravel
 php artisan key:generate --force
