@@ -1,16 +1,20 @@
 #!/bin/bash
 
-# Wait for the environment to be ready
-sleep 2
+# Initialize Laravel
+php artisan key:generate --force
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Run migrations
+php artisan migrate --force
 
 # Start PHP-FPM
 php-fpm -D
 
-# Generate application key if not set
-php artisan key:generate --force
-
-# Run database migrations
-php artisan migrate --force
+# Start Nginx (and keep it in foreground)
+nginx -g 'daemon off;'
 
 # Clear caches
 php artisan config:clear

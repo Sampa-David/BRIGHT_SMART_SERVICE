@@ -1,11 +1,16 @@
 [build]
-command = "php artisan optimize && npm run build"
+builder = "Dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
 healthcheckPath = "/"
-restartPolicyType = "ON_FAILURE"
+healthcheckTimeout = 300
+restartPolicyType = "on-failure"
+restartPolicyMaxRetries = 5
 
-[database]
-type = "postgresql"
-connect = false
+[deploy.env]
+PORT = "8000"
+APP_URL = "https://${RAILWAY_STATIC_URL}"
+APP_ENV = "production"
+PHP_MEMORY_LIMIT = "256M"
+MAX_EXECUTION_TIME = "60"
