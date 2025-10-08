@@ -44,5 +44,9 @@ RUN chown -R www-data:www-data \
 # Expose port
 EXPOSE 8000
 
+# Make start script executable
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Start command
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD ["/start.sh"]
