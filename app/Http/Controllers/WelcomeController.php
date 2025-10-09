@@ -9,8 +9,8 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        $services = Service::all();
-        return view('welcome', compact('services'));
+        
+        return response()->json(['ok ! successfully'=>true]);
     }
 
     public function contact(Request $request)

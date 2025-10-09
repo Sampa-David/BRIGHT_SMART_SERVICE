@@ -54,7 +54,7 @@ class SupabaseRlsPoliciesTest extends TestCase
         $this->assertTrue(isset($response->data));
         // Vérifier que tous les service_requests appartiennent à l'utilisateur
         foreach ($response->data as $request) {
-            $this->assertEquals($request->user_id, 'user-id');
+            $this->assertEquals($request->user_id, 'user_id');
         }
     }
 
