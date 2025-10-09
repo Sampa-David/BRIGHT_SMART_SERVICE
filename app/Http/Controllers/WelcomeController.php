@@ -9,8 +9,13 @@ class WelcomeController extends Controller
 {
     public function index()
     {
+        try{
+            $services = Service::all();
+        }catch(\Exception $e){
+            $services = collect();
+        }
         
-        return response()->json(['ok ! successfully'=>true]);
+        return view('welcome',compact('services'));
     }
 
     public function contact(Request $request)
