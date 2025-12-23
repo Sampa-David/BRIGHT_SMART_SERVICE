@@ -20,7 +20,6 @@ php artisan route:cache || true
 php artisan view:cache || true
 php artisan migrate --force || true
 
-# Démarrer PHP-FPM et Nginx
-echo "🚀 Starting PHP-FPM and Nginx on port $PORT"
-service php8.2-fpm start
-exec nginx -g 'daemon off;'
+# Démarrer avec le serveur PHP intégré
+echo "🚀 Starting Laravel on port $PORT"
+exec php artisan serve --host=0.0.0.0 --port=$PORT
