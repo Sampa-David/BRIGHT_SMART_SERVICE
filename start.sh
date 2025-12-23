@@ -4,9 +4,6 @@ set -e
 # Configurer le port
 export PORT=${PORT:-8000}
 
-# Générer le fichier de conf Nginx à partir du template
-envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
-
 # Attendre MySQL si présent
 if [ -n "$DB_HOST" ]; then
   echo "⏳ Waiting for MySQL to be ready..."
