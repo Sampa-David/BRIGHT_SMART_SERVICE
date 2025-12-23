@@ -7,10 +7,10 @@ export PORT=${PORT:-8000}
 # Générer le fichier de conf Nginx à partir du template
 envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
-# Attendre PostgreSQL si présent
-if [ -n "$DATABASE_URL" ]; then
-  echo "⏳ Waiting for PostgreSQL to be ready..."
-  until php -r "try { new PDO(getenv('DATABASE_URL')); exit(0); } catch(Exception \$e) { echo '.'; sleep(2); }"; do :; done
+# Attendre MySQL si présent
+if [ -n "$DB_HOST" ]; then
+  echo "⏳ Waiting for MySQL to be ready..."
+  until php -r "try { new PDO('mysql:host=' . getenv('DB_HOST') . ';port=' . (getenv('DB_PORT') ?: '3306'), getenv('DB_USERNAME'), getenv('DB_PASSWORD')); exit(0); } catch(Exception \$e) { echo '.'; sleep(2); }"; do :; done
   echo "✅ Database is ready"
 fi
 
