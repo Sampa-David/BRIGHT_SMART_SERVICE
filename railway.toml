@@ -7,7 +7,7 @@ restartPolicyType = "always"
 
 [deploy.env]
 APP_ENV = "production"
-APP_DEBUG = "false"
+APP_DEBUG = "true"
 APP_KEY = "base64:${RAILWAY_RANDOM_KEY}"
 APP_URL = "https://${RAILWAY_STATIC_URL}"
 ASSET_URL = "https://${RAILWAY_STATIC_URL}"
