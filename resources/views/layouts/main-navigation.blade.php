@@ -26,12 +26,15 @@
 
             @auth
                 @php
-                    $isAdmin = Auth::user()->hasRole('admin') || Auth::user()->hasRole('superadmin');
-                    
-                    if($isAdmin) {
-                        $dashboardRoute = Auth::user()->hasRole('superadmin') ? 'superadmin.dashboard' : 'admin.dashboard';
-                        $dashboardText = 'Administration';
-                    } else {
+                    $isAdmin = Auth::user()->hasRole('admin') || Auth::user()->role ='superadmin';
+                    $isSuperAamin = Auth::user()->hasRole('superadmin');
+                    if($isSuperAdmin) {
+                        $dashboardRoute =  'superadmin.dashboard';
+                        $dashboardText = 'Patron Administration';
+                    } else if($isAdmin) {
+                        $dashboardRoute = 'admin.dashboard' ;
+                        $dashboardText = 'adjoint Administration';
+                    }else{
                         $dashboardRoute = 'client.dashboard';
                         $dashboardText = 'Mon tableau de bord';
                     }
@@ -49,16 +52,18 @@
                             </a>
                         </li>
                         
-                        @if($email === $adminEmail || $email === $superAdminEmail)
+                        @if($isAdmin || $isSuperAdmin)
                         <li>
                             <a href="{{ route('dashboard.statistics') }}" class="dropdown-item">
                                 <i class="bi bi-graph-up"></i> Statistiques
                             </a>
                         </li>
                         <li>
+                            
                             <a href="{{ route('services.manage') }}" class="dropdown-item">
                                 <i class="bi bi-gear"></i> Gérer les services
                             </a>
+                            
                         </li>
                         @endif
                         

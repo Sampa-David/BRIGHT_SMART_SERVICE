@@ -214,9 +214,9 @@ class DashboardController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        
+        $admin = $user->role ='admin' || $user->hasRole('admin');
         // Vérifie si l'utilisateur est autorisé
-        if ($user->email !== $this->adminEmail && $user->email !== $this->superAdminEmail) {
+        if (!($user->role ='admin' || $user->hasRole('admin'))) {
             return redirect()->route('client.dashboard')
                 ->with('error', 'Accès non autorisé.');
         }
@@ -238,7 +238,7 @@ class DashboardController extends Controller
         /** @var User $authenticatedUser */
         $authenticatedUser = Auth::user();
         try {
-            if ($authenticatedUser->email !== $this->superAdminEmail || !$authenticatedUser->hasRole('superadmin')) {
+            if ( !$authenticatedUser->hasRole('superadmin')) {
                 return response()->json([
                     'success' => false,
                     'message' => '❌ Non autorisé à effectuer cette action',
@@ -298,7 +298,7 @@ class DashboardController extends Controller
         try {
             Log::info("Tentative de révocation des droits admin pour l'utilisateur ID: {$user}");
             
-            if ($authenticatedUser->email !== $this->superAdminEmail || !$authenticatedUser->hasRole('superadmin')) {
+            if ( !$authenticatedUser->hasRole('superadmin')) {
                 Log::warning("Tentative non autorisée de révocation des droits admin par {$authenticatedUser->email}");
                 return response()->json([
                     'success' => false,
@@ -383,7 +383,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         
         // Vérification stricte pour le superadmin
-        if ($user->email !== $this->superAdminEmail || !$user->hasRole('superadmin')) {
+        if ( !$user->hasRole('superadmin')) {
             return redirect()->route('client.dashboard')
                 ->with('error', 'Accès non autorisé à la gestion des rôles.');
         }

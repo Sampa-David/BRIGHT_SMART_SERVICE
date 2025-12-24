@@ -60,7 +60,7 @@ class TwoFactorController extends Controller
         }
         
         // Vérifier si c'est un admin
-        $isAdmin = $email === $this->adminEmail && ($user->role === 'admin' || $user->hasRole('admin'));
+        $isAdmin =  ($user->role === 'admin' || $user->hasRole('admin'));
         if ($isAdmin) {
             Session::put('2fa_email', $email);
             Session::put('user_role', 'admin');
