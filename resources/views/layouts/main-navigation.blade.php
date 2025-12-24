@@ -26,12 +26,10 @@
 
             @auth
                 @php
-                    $email = Auth::user()->email;
-                    $adminEmail = 'ceobrightsmart@gmail.com';
-                    $superAdminEmail = 'Admain@gmail.com';
+                    $isAdmin = Auth::user()->hasRole('admin') || Auth::user()->hasRole('superadmin');
                     
-                    if($email === $adminEmail || $email === $superAdminEmail) {
-                        $dashboardRoute = 'admin.dashboard';
+                    if($isAdmin) {
+                        $dashboardRoute = Auth::user()->hasRole('superadmin') ? 'superadmin.dashboard' : 'admin.dashboard';
                         $dashboardText = 'Administration';
                     } else {
                         $dashboardRoute = 'client.dashboard';

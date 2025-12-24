@@ -7,36 +7,36 @@ use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class SuperAdminSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
     public function run()
     {
         // Créer le rôle superadmin s'il n'existe pas
-        $superadminRole = Role::firstOrCreate(
-            ['slug' => 'superadmin'],
+        $adminRole = Role::firstOrCreate(
+            ['slug' => 'admin'],
             [
-                'name' => 'Super Administrateur',
-                'description' => 'Accès complet au système'
+                'name' => ' Administrateur',
+                'description' => 'Accès presque complet au système'
             ]
         );
 
-        // Créer l'utilisateur superadmin
-        $superadmin = User::firstOrCreate(
-            ['email' => 'njonoussis@gmail.com'],
+        // Créer l'utilisateur admin
+        $admin = User::firstOrCreate(
+            ['email' => 'devbss@gmail.com'],
             [
-                'username' => 'superadmin',
-                'name' => 'Super Admin',
+                'username' => 'Dav',
+                'name' => 'Admin',
                 'password' => Hash::make('password123'), // Changez ce mot de passe en production
                 'email_verified_at' => now(),
                 'status' => 'active',
                 'location' => 'Toulouse',
                 'region' => 'Occitanie',
                 'state' => 'Haute-Garonne',
-                'role' => 'superadmin'
+                'role' => 'admin'
             ]
         );
 
         // Assigner le rôle superadmin
-        $superadmin->roles()->sync([$superadminRole->id]);
+        $admin->roles()->sync([$adminRole->id]);
     }
 }

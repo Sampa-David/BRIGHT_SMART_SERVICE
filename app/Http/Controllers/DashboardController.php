@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    private $adminEmail = 'ceobrightsmart@gmail.com';
-    private $superAdminEmail = 'njonoussis@gmail.com';
-
     /**
      * Redirige vers le tableau de bord approprié
      */
@@ -87,7 +84,6 @@ class DashboardController extends Controller
             'total_services'=>Service::count(),
             'new_message'=>Contact::where('status','unread')->count(),
             'active_clients'=>User::where('status','active')->count(),
-            'admin'=>User::where('email','LIKE','ceobrightsmart@gmail.com')->get()
         ];
 
         $service_requests=ServiceRequest::with('users','services')->latest()->take(5)->get();

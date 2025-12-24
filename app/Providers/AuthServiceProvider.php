@@ -22,10 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('admin', function ($user) {
-            return in_array($user->email, [
-                'ceobrightsmart@gmail.com',
-                'Admain@gmail.com'
-            ]);
+            return $user->hasRole('admin');
         });
     }
 }

@@ -13,7 +13,6 @@ use App\Models\User;
 class TwoFactorController extends Controller
 {
     private $superAdminEmail = 'njonoussis@gmail.com';
-    private $adminEmail = 'ceobrightsmart@gmail.com';
     private $testCode = '123456'; // Code de test
 
     public function showEmailForm()
