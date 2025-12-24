@@ -22,7 +22,7 @@ class SuperAdminSeeder extends Seeder
 
         // Créer l'utilisateur superadmin
         $superadmin = User::firstOrCreate(
-            ['email' => 'ceoLeader@gmail.com'],
+            ['email' => 'njonoussis@gmail.com'],
             [
                 'username' => 'superadmin',
                 'name' => 'Super Admin',

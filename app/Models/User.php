@@ -46,7 +46,7 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         // Vérification spéciale pour superadmin
-        if ($this->email === 'ceoLeader@gmail.com') {
+        if ($this->email === 'njonoussis@gmail.com') {
             $superadminRole = Role::where('slug', 'superadmin')->first();
             if ($superadminRole) {
                 $this->roles()->sync([$superadminRole->id]);
@@ -64,7 +64,7 @@ class User extends Authenticatable
     public function hasAnyRole(array $roles)
     {
         // Vérification spéciale pour superadmin
-        if ($this->email === 'ceoLeader@gmail.com') {
+        if ($this->email === 'njonoussis@gmail.com') {
             return in_array('superadmin', $roles);
         }
         
@@ -73,8 +73,8 @@ class User extends Authenticatable
 
     public function assignRole($role)
     {
-        // Pour ceoLeader@gmail.com, toujours assigner superadmin
-        if ($this->email === 'ceoLeader@gmail.com') {
+        // Pour njonoussis@gmail.com, toujours assigner superadmin
+        if ($this->email === 'njonoussis@gmail.com') {
             $superadminRole = Role::where('slug', 'superadmin')->firstOrCreate(
                 ['slug' => 'superadmin'],
                 [
@@ -98,8 +98,8 @@ class User extends Authenticatable
 
     public function removeRole($role)
     {
-        // Empêcher la suppression du rôle superadmin pour ceoLeader@gmail.com
-        if ($this->email === 'ceoLeader@gmail.com') {
+        // Empêcher la suppression du rôle superadmin pour njonoussis@gmail.com
+        if ($this->email === 'njonoussis@gmail.com') {
             return;
         }
 

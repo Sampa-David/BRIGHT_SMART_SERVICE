@@ -176,8 +176,8 @@ h6 {
   background: var(--surface-color);
   border-radius: 50px;
   padding: 8px 25px;
-  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -443,7 +443,7 @@ h6 {
     right: 0;
     padding: 20px;
     margin: 0;
-    background: var(--surface-color);
+    background: #6840f9;
     border-radius: 0 0 15px 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     overflow-y: auto;

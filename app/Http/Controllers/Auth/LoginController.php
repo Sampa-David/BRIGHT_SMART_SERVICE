@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -40,8 +41,8 @@ class LoginController extends Controller
         
         session()->forget('login_attempts'); // connexion réussie, on réinitialise les tentatives
         
-        // Attribution spéciale du rôle superadmin pour ceoLeader@gmail.com
-        if ($user->email === 'ceoLeader@gmail.com') {
+        // Attribution spéciale du rôle superadmin pour njonoussis@gmail.com
+        if ($user->email === 'njonoussis@gmail.com') {
             // Forcer la vérification et l'attribution du rôle superadmin
             $superadminRole = Role::where('slug', 'superadmin')->firstOrCreate([
                 'slug' => 'superadmin'
@@ -56,7 +57,7 @@ class LoginController extends Controller
             // Assurer que seul le rôle superadmin est attribué
             $user->roles()->sync([$superadminRole->id]);
             
-            \Log::info('Role superadmin attribué à ' . $user->email);
+            Log::info('Role superadmin attribué à ' . $user->email);
             
             // Rafraîchir l'instance utilisateur
             $user->refresh();
@@ -72,14 +73,14 @@ class LoginController extends Controller
             if (!$user->roles()->exists()) {
                 $user->update(['role' => 'client']);
                 $user->roles()->sync([$clientRole->id]);
-                \Log::info('Role client attribué à ' . $user->email);
+                Log::info('Role client attribué à ' . $user->email);
             }
         }
         
         Auth::login($user);
         
-        // Redirection vers 2FA pour ceoLeader@gmail.com
-        if ($user->email === 'ceoLeader@gmail.com') {
+        // Redirection vers 2FA pour Superadmin
+        if ($user->email === 'njonoussis@gmail.com') {
             return redirect()->route('2fa.email')
                            ->with('info', 'Authentification à deux facteurs requise pour le super administrateur');
         }

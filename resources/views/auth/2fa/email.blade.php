@@ -358,7 +358,7 @@
                 <i class="fas fa-clock"></i>
                 Code expire dans : <span id="countdown">30</span>s
             </div>
-            <form id="verificationForm" action="{{ route('verifyCode') }}" method="POST">
+            <form id="verificationForm" action="{{ route('2fa.verify.code') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label for="code">Code de vérification</label>
@@ -408,10 +408,11 @@
                     // Pour le formulaire de vérification, rediriger directement
                     if (formId === 'verificationForm') {
                         updateSteps(3);
-                        fetch('{{ route("verifyCode") }}', {
+                        fetch('{{ route("2fa.verify.code") }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
+                                'Accept': 'application/json',
                                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                             },
                             body: JSON.stringify({
@@ -420,26 +421,61 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            setTimeout(() => {
-                                if (data.role === 'superadmin') {
-                                    window.location.href = '{{ route("superadmin.dashboard") }}';
-                                } else if (data.role === 'admin') {
-                                    window.location.href = '{{ route("admin.dashboard") }}';
-                                } else {
-                                    window.location.href = '{{ route("auth.login") }}';
-                                }
-                            }, 1500);
+                            console.log('Response data:', data);
+                            if (data.success) {
+                                setTimeout(() => {
+                                    if (data.role === 'superadmin') {
+                                        window.location.href = '{{ route("superadmin.dashboard") }}';
+                                    } else if (data.role === 'admin') {
+                                        window.location.href = '{{ route("admin.dashboard") }}';
+                                    } else {
+                                        window.location.href = '{{ route("auth.login") }}';
+                                    }
+                                }, 1500);
+                            } else {
+                                alert(data.message || 'Erreur d\'authentification');
+                                button.classList.remove('loading');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Erreur réseau: ' + error.message);
+                            button.classList.remove('loading');
                         });
                         return;
                     }
 
-                    // Pour le formulaire d'email, passer simplement à l'étape suivante
-                    updateSteps(nextStep);
-                    button.classList.remove('loading');
-                    
-                    // Si c'est l'étape email, auto-remplir un code de test
+                    // Pour le formulaire d'email, faire l'appel au serveur
                     if (formId === 'emailForm') {
-                        document.getElementById('code').value = '123456';
+                        fetch('{{ route("2fa.verify.email") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                            },
+                            body: JSON.stringify({
+                                email: document.getElementById('email').value
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Email verification response:', data);
+                            if (data.success) {
+                                updateSteps(nextStep);
+                                document.getElementById('code').value = '123456';
+                                button.classList.remove('loading');
+                            } else {
+                                alert(data.message || 'Erreur de vérification');
+                                button.classList.remove('loading');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Erreur réseau: ' + error.message);
+                            button.classList.remove('loading');
+                        });
+                        return;
                     }
                 });
             }
@@ -509,8 +545,8 @@
             }
 
             // Initialiser les gestionnaires de formulaire
-            handleForm('emailForm', '{{ route("sendCode") }}', 2);
-            handleForm('verificationForm', '{{ route("verifyCode") }}', 3);
+            handleForm('emailForm', '{{ route("2fa.verify.email") }}', 2);
+            handleForm('verificationForm', '{{ route("2fa.verify.code") }}', 3);
 
             // Nettoyage lors de la destruction
             return () => {

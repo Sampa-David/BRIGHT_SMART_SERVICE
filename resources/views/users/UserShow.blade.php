@@ -425,7 +425,7 @@
                 <a href="{{ route('services.manage') }}" class="nav-link">
                     <i class="bi bi-gear"></i> Services
                 </a>
-                <a href="{{ route('contacts.manage') }}" class="nav-link">
+                <a href="{{ route('admin.contacts.index') }}" class="nav-link">
                     <i class="bi bi-envelope"></i> Messages
                 </a>
                 <a href="{{ route('profile.edit') }}" class="nav-link">

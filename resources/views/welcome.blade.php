@@ -86,9 +86,9 @@
                                 
                                 @if(Auth::user()->hasRole('superadmin'))
                                     <li><a href="{{ route('superadmin.dashboard') }}">Administration</a></li>
-                                    <li><a href="{{ route('dashboard.statistics') }}">Statistiques</a></li>
+                                    <li><a href="{{ route('superadmin.statistics') }}">Statistiques</a></li>
                                     <li><a href="{{ route('services.manage') }}">Gérer les services</a></li>
-                                    <li><a href="{{ route('roles.index') }}">Gestion des rôles</a></li>
+                                    <li><a href="{{ route('superadmin.roles') }}">Gestion des rôles</a></li>
                                     <li><a href="{{ route('users.index') }}">Gestion des utilisateurs</a></li>
                                 @elseif(Auth::user()->hasRole('admin'))
                                     <li><a href="{{ route('admin.dashboard') }}">Administration</a></li>

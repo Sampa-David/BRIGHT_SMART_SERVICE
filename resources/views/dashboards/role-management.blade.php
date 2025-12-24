@@ -6,21 +6,26 @@
     <title>Gestion des Rôles - {{ config('app.name') }}</title>
     @include('partials.favicons')
     
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/css/bright-logo.css">
     
     <style>
         :root {
-            --primary: #4e73df;
-            --success: #1cc88a;
-            --info: #36b9cc;
-            --warning: #f6c23e;
-            --danger: #e74a3b;
-            --dark-blue: #224abe;
-            --gray: #858796;
-            --gray-dark: #5a5c69;
-            --light: #f8f9fc;
-            --dark: #3a3b45;
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --dark-color: #2C3E50;
+            --light-color: #F7F9FC;
+            --success-color: #2ECC71;
+            --warning-color: #F1C40F;
+            --danger-color: #E74C3C;
+            --info-color: #3498DB;
+            --gray-color: #95A5A6;
+            --gray-light-color: #ECF0F1;
         }
 
         * {
@@ -30,24 +35,134 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fc;
-            color: #858796;
-            line-height: 1.5;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
+        .container-fluid {
+            flex-grow: 1;
+            padding: 2rem;
+            margin-left: 280px;
+            transition: margin 0.3s ease;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Menu Toggle Button */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 101;
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle:hover {
+            background: var(--light-color);
+            transform: scale(1.05);
+        }
+
+        .menu-toggle.active {
+            left: 300px;
+            color: white;
+            background: var(--primary-color);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1.5rem;
+            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar-brand {
+            color: white;
+            font-size: 1.4rem;
+            text-decoration: none;
+            padding: 1.5rem 1rem;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-brand img {
+            height: 40px;
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid rgba(255,255,255,.15);
+            margin: 1rem 0;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.9);
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover, 
+        .nav-item a.active {
+            color: white;
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .nav-item i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Header */
         .header {
             background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,.15);
+            margin-bottom: 2rem;
+            border-radius: 15px;
         }
 
         .header-content {
@@ -57,146 +172,339 @@
         }
 
         .page-title {
-            font-size: 1.75rem;
-            color: var(--gray-dark);
+            font-size: 2rem;
+            color: var(--dark-color);
             margin: 0;
-            font-weight: 500;
+            font-weight: 700;
         }
 
-        .alert {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 0.35rem;
-            border: 1px solid transparent;
+        .page-subtitle {
+            color: var(--gray-color);
+            margin: 0;
+            font-size: 0.9rem;
         }
 
-        .alert-success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-
+        /* Cards */
         .card {
             background: white;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,.15);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .card-header {
-            padding: 1.25rem;
-            border-bottom: 1px solid #e3e6f0;
-            background: var(--primary);
-            color: white;
-            border-radius: 0.35rem 0.35rem 0 0;
+            padding: 1.5rem;
+            background-color: white;
+            border-bottom: 1px solid var(--gray-light-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .card-title {
-            margin: 0;
-            font-size: 1rem;
+        .card-header-title {
+            color: var(--primary-color);
             font-weight: 700;
+            margin: 0;
+            font-size: 1.1rem;
         }
 
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+            user-select: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border: none;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+            font-size: 1.1em;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), #ff8585);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+        }
+
+        .btn-success {
+            color: white;
+            background: linear-gradient(135deg, var(--success-color), #27ae60);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,204,113,0.3);
+        }
+
+        .btn-danger {
+            color: white;
+            background: linear-gradient(135deg, var(--danger-color), #c0392b);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231,76,60,0.3);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+        }
+
+        /* Actions Column */
+        td:last-child {
+            white-space: normal;
+            word-wrap: break-word;
+            min-width: 140px;
+        }
+
+        td:last-child .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+
+        td:last-child form {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        /* Tables */
         .table-responsive {
-            overflow-x: auto;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin: 1rem 0;
+            max-height: 600px;
+            overflow-y: auto;
+            width: 100%;
         }
 
         .table {
             width: 100%;
             margin-bottom: 0;
-            color: var(--gray);
+            color: var(--dark-color);
             border-collapse: collapse;
+            min-width: 100%;
         }
 
-        .table th,
-        .table td {
-            padding: 1rem;
-            vertical-align: middle;
-            border-top: 1px solid #e3e6f0;
-        }
-
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #e3e6f0;
-            background-color: var(--light);
-            color: var(--gray-dark);
+        .table th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
             font-weight: 700;
             font-size: 0.85rem;
             text-transform: uppercase;
+            padding: 1rem;
+            border-bottom: 2px solid var(--gray-light-color);
+            position: sticky;
+            top: 0;
+        }
+
+        .table th:last-child {
+            min-width: 140px;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-light-color);
+        }
+
+        .table td:last-child {
+            white-space: normal;
+            word-wrap: break-word;
         }
 
         .table tbody tr:hover {
-            background-color: var(--light);
+            background-color: var(--light-color);
         }
 
+        /* Status Badge */
         .badge {
             display: inline-block;
-            padding: 0.25em 0.75em;
+            padding: 0.35rem 0.75rem;
             font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 0.35rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 20px;
         }
 
         .badge-admin {
-            background-color: var(--primary);
-            color: white;
+            background-color: rgba(255,107,107,0.15);
+            color: var(--primary-color);
         }
 
         .badge-client {
-            background-color: var(--info);
-            color: white;
+            background-color: rgba(78,205,196,0.15);
+            color: var(--secondary-color);
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.375rem 0.75rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-decoration: none;
-            border-radius: 0.35rem;
-            cursor: pointer;
-            transition: all 0.2s;
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
             border: none;
         }
 
-        .btn-success {
-            background-color: var(--success);
-            color: white;
+        .alert-success {
+            background-color: rgba(46,204,113,0.15);
+            color: var(--success-color);
         }
 
-        .btn-danger {
-            background-color: var(--danger);
-            color: white;
+        .alert-danger {
+            background-color: rgba(231,76,60,0.15);
+            color: var(--danger-color);
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,.15);
-        }
-
-        .icon {
-            font-size: 1.1em;
+        .d-inline {
+            display: inline;
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
+            .wrapper {
+                flex-direction: column;
+            }
+
+            .container-fluid {
+                margin-left: 0;
+                padding: 1.5rem 1rem;
+                padding-top: 5rem;
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                width: 280px;
+                height: 100vh;
+                z-index: 99;
+                box-shadow: 2px 0 15px rgba(0,0,0,0.2);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar.active ~ .menu-toggle {
+                left: 300px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .table th, .table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            td:last-child .btn {
+                min-height: 32px;
+                display: flex;
+                align-items: center;
+                margin: 0.25rem 0.25rem 0.25rem 0;
+            }
+
+            td:last-child {
+                min-width: 130px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container-fluid {
+                padding: 1rem 0.75rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .sidebar {
+                width: 250px;
+                left: -250px;
+            }
+
+            .sidebar-brand {
+                padding: 1rem 0.75rem;
+                font-size: 1rem;
+            }
+
+            .table th, .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.7rem;
+            }
+
+            .btn-sm {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+            }
+
+            .btn i {
+                margin-right: 0.25rem;
+                font-size: 0.9em;
+            }
+
+            td:last-child {
+                min-width: 120px;
+            }
+
+            td:last-child .btn {
+                padding: 0.4rem 0.6rem;
+                white-space: nowrap;
+                flex-wrap: wrap;
+            }
+
+            td:last-child form {
+                margin-right: 0.25rem;
+                margin-bottom: 0.25rem;
             }
 
             .table-responsive {
-                margin: 0 -0.5rem;
+                max-height: 400px;
             }
         }
     </style>
@@ -212,26 +520,22 @@
                     type: 'POST',
                     data: form.serialize(),
                     success: function(response) {
-                        // Afficher le message de succès
                         const alertDiv = $('<div>')
                             .addClass('alert alert-success')
-                            .text(response.message)
-                            .prependTo('.container');
+                            .html('<i class="bi bi-check-circle"></i> ' + response.message)
+                            .prependTo('.container-fluid');
                         
-                        // Redirection après 2 secondes
                         setTimeout(function() {
                             window.location.href = response.redirect_url;
                         }, response.timeout);
                     },
                     error: function(xhr) {
                         const response = xhr.responseJSON;
-                        // Afficher le message d'erreur
                         const alertDiv = $('<div>')
                             .addClass('alert alert-danger')
-                            .text(response.message)
-                            .prependTo('.container');
+                            .html('<i class="bi bi-exclamation-circle"></i> ' + response.message)
+                            .prependTo('.container-fluid');
                         
-                        // Supprimer le message après 3 secondes
                         setTimeout(function() {
                             alertDiv.fadeOut();
                         }, 3000);
@@ -242,86 +546,198 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-content">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="bright-logo-container" style="padding: 0;">
-                        <img src="/img/logo/logo.png" alt="Bright Smart Services" class="bright-logo-header">
-                    </div>
-                    <h1 class="page-title">Gestion des Rôles</h1>
-                </div>
-                <a href="{{ route('superadmin.dashboard') }}" class="btn btn-primary">
-                    <i class="bi bi-arrow-left"></i> Retour
+    <div class="wrapper">
+        <!-- Menu Toggle Button -->
+        <button class="menu-toggle" id="menuToggle" title="Menu">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <a href="{{route('superadmin.dashboard')}}" class="sidebar-brand">
+                <img src="{{ asset('img/logo.webp') }}" alt="Logo">
+                <span>Super Admin</span>
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="nav-item">
+                <a href="{{ route('superadmin.dashboard') }}" class="nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Tableau de bord</span>
                 </a>
             </div>
-        </div>
 
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+            <div class="nav-item">
+                <a href="{{ route('superadmin.admins') }}" class="nav-link">
+                    <i class="bi bi-people"></i>
+                    <span>Administrateurs</span>
+                </a>
             </div>
-        @endif
 
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
+            <div class="nav-item">
+                <a href="{{ route('superadmin.statistics') }}" class="nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Statistiques</span>
+                </a>
             </div>
-        @endif
 
-        <div class="card">
-            <div class="card-header">
-                <h6 class="card-title">
-                    <i class="bi bi-shield icon"></i> Attribution des Rôles
-                </h6>
+            <div class="nav-item">
+                <a href="{{ route('services.manage') }}" class="nav-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Services</span>
+                </a>
             </div>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Email</th>
-                            <th>Rôle actuel</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($users as $user)
+
+            <div class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link">
+                    <i class="bi bi-person-badge"></i>
+                    <span>Utilisateurs</span>
+                </a>
+            </div>
+
+            <div class="nav-item">
+                <a href="{{ route('superadmin.roles') }}" class="nav-link active">
+                    <i class="bi bi-shield"></i>
+                    <span>Gestion des Rôles</span>
+                </a>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="nav-item">
+                <a href="{{ route('profile.edit') }}" class="nav-link">
+                    <i class="bi bi-person"></i>
+                    <span>Mon profil</span>
+                </a>
+            </div>
+
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1 class="page-title">Gestion des Rôles</h1>
+                        <p class="page-subtitle">Attribuez et gérez les rôles des utilisateurs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages de notification -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-circle"></i> {{ session('error') }}
+                </div>
+            @endif
+
+            <!-- Table de gestion des rôles -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-header-title">
+                        <i class="bi bi-shield-fill"></i> Attribution des Rôles
+                    </h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    @if($user->hasRole('admin'))
-                                        <span class="badge badge-admin">Administrateur</span>
-                                    @else
-                                        <span class="badge badge-client">Client</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if(!$user->hasRole('admin'))
-                                        <form action="{{ route('superadmin.admin.makeAdmin', $user->id) }}" method="POST" class="d-inline role-form">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="bi bi-shield-plus icon"></i>
-                                                Assigner Admin
-                                            </button>
-                                        </form>
-                                    @else
-                                        <form action="{{ route('superadmin.admin.revokeAdmin', $user->id) }}" method="POST" class="d-inline role-form">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="bi bi-shield-x icon"></i>
-                                                Révoquer Admin
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Rôle actuel</th>
+                                <th>Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($users as $user)
+                                <tr>
+                                    <td>
+                                        <strong>{{ $user->name }}</strong>
+                                    </td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        @if($user->hasRole('admin'))
+                                            <span class="badge badge-admin">Administrateur</span>
+                                        @else
+                                            <span class="badge badge-client">Client</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(!$user->hasRole('admin'))
+                                            <form action="{{ route('superadmin.admin.makeAdmin', $user->id) }}" method="POST" class="d-inline role-form">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="bi bi-shield-plus"></i>
+                                                    Assigner Admin
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('superadmin.admin.revokeAdmin', $user->id) }}" method="POST" class="d-inline role-form">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-shield-x"></i>
+                                                    Révoquer Admin
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Logout Form -->
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
+    <script>
+        // Menu Toggle Functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking on a nav link
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
+            });
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickInsideToggle = menuToggle.contains(event.target);
+            
+            if (!isClickInsideSidebar && !isClickInsideToggle && window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\Service;
 use App\Models\ServiceRequest;
 use App\Models\User;
@@ -15,19 +16,20 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     private $adminEmail = 'ceobrightsmart@gmail.com';
-    private $superAdminEmail = 'ceoLeader@gmail.com';
+    private $superAdminEmail = 'njonoussis@gmail.com';
 
     /**
      * Redirige vers le tableau de bord approprié
      */
     public function index()
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
         
-        if ($user->hasRole('admin')) {
-            return redirect()->route('admin.dashboard');
-        }elseif($user->email === $this->superAdminEmail) {
+        if ($user->hasRole('superadmin')) {
             return redirect()->route('superadmin.dashboard');
+        } elseif ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
         }
         
         return redirect()->route('client.dashboard');
@@ -39,11 +41,12 @@ class DashboardController extends Controller
      */
 
     public function superAdminDashboard(){
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
         
         // Vérification stricte pour le superadmin
-        if ($user->email !== 'ceoLeader@gmail.com' || !$user->hasRole('superadmin')) {
-            \Log::warning('Tentative d\'accès non autorisé au dashboard superadmin', [
+        if ($user->email !== 'njonoussis@gmail.com' || !$user->hasRole('superadmin')) {
+            Log::warning('Tentative d\'accès non autorisé au dashboard superadmin', [
                 'user_email' => $user->email,
                 'roles' => $user->roles()->pluck('slug')
             ]);
@@ -96,7 +99,8 @@ class DashboardController extends Controller
      */
     public function adminDashboard()
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
         
         // Vérifie si l'utilisateur est autorisé
         if (!$user->hasRole('admin')) {
@@ -163,8 +167,8 @@ class DashboardController extends Controller
      * Affiche le tableau de bord client
      */
     public function clientDashboard()
-    {
-        $user = auth()->user();
+    {        /** @var User $user */        /** @var User $user */
+        $user = Auth::user();
         
         $data = [
             'my_requests' => ServiceRequest::where('user_id', $user->id)
@@ -212,7 +216,8 @@ class DashboardController extends Controller
 
     public function statistics()
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
         
         // Vérifie si l'utilisateur est autorisé
         if ($user->email !== $this->adminEmail && $user->email !== $this->superAdminEmail) {
@@ -234,7 +239,8 @@ class DashboardController extends Controller
     }
 
     public function makeAdmin(Request $request, $user){
-        $authenticatedUser = auth()->user();
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
         try {
             if ($authenticatedUser->email !== $this->superAdminEmail || !$authenticatedUser->hasRole('superadmin')) {
                 return response()->json([
@@ -269,7 +275,7 @@ class DashboardController extends Controller
 
             // Attache le rôle à l'utilisateur
             $targetUser->roles()->attach($adminRole->id);
-            \Log::info("Rôle administrateur assigné à {$targetUser->name} avec succès");
+            Log::info("Rôle administrateur assigné à {$targetUser->name} avec succès");
 
             return response()->json([
                 'success' => true,
@@ -279,7 +285,7 @@ class DashboardController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error("Erreur lors de l'assignation du rôle admin: " . $e->getMessage());
+            Log::error("Erreur lors de l'assignation du rôle admin: " . $e->getMessage());
 
             return response()->json([
                 'success' => false,
@@ -291,12 +297,13 @@ class DashboardController extends Controller
     }
 
     public function revokeAdmin(Request $request, $user){
-        $authenticatedUser = auth()->user();
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::user();
         try {
-            \Log::info("Tentative de révocation des droits admin pour l'utilisateur ID: {$user}");
+            Log::info("Tentative de révocation des droits admin pour l'utilisateur ID: {$user}");
             
             if ($authenticatedUser->email !== $this->superAdminEmail || !$authenticatedUser->hasRole('superadmin')) {
-                \Log::warning("Tentative non autorisée de révocation des droits admin par {$authenticatedUser->email}");
+                Log::warning("Tentative non autorisée de révocation des droits admin par {$authenticatedUser->email}");
                 return response()->json([
                     'success' => false,
                     'message' => '❌ Non autorisé à effectuer cette action',
@@ -306,11 +313,11 @@ class DashboardController extends Controller
             }
             
             $targetUser = User::findOrFail($user);
-            \Log::info("Utilisateur trouvé: {$targetUser->name}");
+            Log::info("Utilisateur trouvé: {$targetUser->name}");
             
             // Vérifie si l'utilisateur a le rôle admin
             if (!$targetUser->hasRole('admin')) {
-                \Log::warning("Tentative de révocation pour un utilisateur non admin: {$targetUser->name}");
+                Log::warning("Tentative de révocation pour un utilisateur non admin: {$targetUser->name}");
                 return response()->json([
                     'success' => false,
                     'message' => "❌ L'utilisateur {$targetUser->name} n'est pas administrateur",
@@ -322,7 +329,7 @@ class DashboardController extends Controller
             // Récupérer le rôle client
             $clientRole = Role::where('slug', 'client')->first();
             if (!$clientRole) {
-                \Log::info("Création du rôle client car non existant");
+                Log::info("Création du rôle client car non existant");
                 $clientRole = Role::create([
                     'name' => 'Client',
                     'slug' => 'client',
@@ -333,14 +340,14 @@ class DashboardController extends Controller
             // Détacher le rôle admin et attacher le rôle client
             $adminRole = Role::where('slug', 'admin')->first();
             if ($adminRole) {
-                \Log::info("Détachement du rôle admin pour {$targetUser->name}");
+                Log::info("Détachement du rôle admin pour {$targetUser->name}");
                 $targetUser->roles()->detach($adminRole->id);
             }
 
-            \Log::info("Attachement du rôle client pour {$targetUser->name}");
+            Log::info("Attachement du rôle client pour {$targetUser->name}");
             $targetUser->roles()->attach($clientRole->id);
             
-            \Log::info("Rôle admin révoqué avec succès pour {$targetUser->name}");
+            Log::info("Rôle admin révoqué avec succès pour {$targetUser->name}");
 
             return response()->json([
                 'success' => true,
@@ -350,7 +357,7 @@ class DashboardController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error("Erreur lors de la révocation du rôle admin: " . $e->getMessage(), [
+            Log::error("Erreur lors de la révocation du rôle admin: " . $e->getMessage(), [
                 'user_id' => $user,
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -376,7 +383,8 @@ class DashboardController extends Controller
      */
     public function rolesManagement()
     {
-        $user = auth()->user();
+        /** @var User $user */
+        $user = Auth::user();
         
         // Vérification stricte pour le superadmin
         if ($user->email !== $this->superAdminEmail || !$user->hasRole('superadmin')) {
