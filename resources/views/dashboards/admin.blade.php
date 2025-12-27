@@ -48,7 +48,7 @@
         </button>
 
         <!-- Menu Burger Button (Mobile) - Actions -->
-        <button class="menu-burger menu-burger-actions" id="menuBurgerActions" aria-label="Toggle actions menu">
+        <button class="menu-burger-actions" id="menuBurgerActions" aria-label="Toggle actions menu">
             <span></span>
             <span></span>
             <span></span>

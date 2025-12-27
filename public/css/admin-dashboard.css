@@ -282,7 +282,7 @@ body {
     display: none;
     position: fixed;
     top: 20px;
-    right: 20px;
+    left: 20px;
     width: 50px;
     height: 50px;
     background: white;
@@ -317,7 +317,45 @@ body {
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
-/* Actions Sidebar (Right Side) */
+/* Menu Burger Actions (Right) */
+.menu-burger-actions {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.menu-burger-actions span {
+    width: 25px;
+    height: 2.5px;
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.menu-burger-actions.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.menu-burger-actions.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-burger-actions.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
 .sidebar-actions {
     position: fixed;
     right: -320px;
@@ -389,44 +427,7 @@ body {
     margin-left: auto;
 }
 
-.menu-burger-actions {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 70px;
-    width: 50px;
-    height: 50px;
-    background: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1100;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-}
-
-.menu-burger-actions span {
-    width: 25px;
-    height: 2.5px;
-    background: var(--primary-color);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-}
-
-.menu-burger-actions.active span:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
-}
-
-.menu-burger-actions.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.menu-burger-actions.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
-}
+/* Removed duplicate .menu-burger-actions - defined earlier */
 
 /* Alert Messages */
 .alert {
@@ -903,18 +904,22 @@ body.sidebar-collapsed .container-fluid {
     }
 
     .menu-burger {
-        display: flex;
+        display: flex !important;
         position: fixed;
         top: 20px;
         left: 20px;
+        width: 50px;
+        height: 50px;
         z-index: 1100;
     }
 
     .menu-burger-actions {
-        display: flex;
+        display: flex !important;
         position: fixed;
         top: 20px;
         right: 20px;
+        width: 50px;
+        height: 50px;
         z-index: 1100;
     }
 
