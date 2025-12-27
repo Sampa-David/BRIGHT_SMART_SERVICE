@@ -904,10 +904,18 @@ body.sidebar-collapsed .container-fluid {
 
     .menu-burger {
         display: flex;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1100;
     }
 
     .menu-burger-actions {
         display: flex;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1100;
     }
 
     .sidebar-actions {
