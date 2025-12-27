@@ -64,7 +64,7 @@
                                     </td>
                                     <td>{{ $client->created_at->format('d/m/Y') }}</td>
                                     <td>
-                                        <a href="{{ route('users.show', $client->id) }}" 
+                                        <a href="{{ route('admin.users.show', $client->id) }}" 
                                            class="btn btn-sm" 
                                            style="background-color: var(--info); color: white;">
                                             <i class="bi bi-eye"></i>

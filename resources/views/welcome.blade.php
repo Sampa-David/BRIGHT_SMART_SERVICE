@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -25,42 +25,7 @@
     <!-- Main CSS File -->
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     
-    <style>
-        .btn-getstarted-container {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .btn-getstarted {
-            background: var(--accent-color);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-        }
-
-        .btn-getstarted:hover {
-            background: var(--accent-color-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
-        }
-
-        .btn-getstarted:active {
-            transform: translateY(1px);
-        }
-    </style>
+        <link rel="stylesheet" href="{{ asset("css/views/welcome.blade.css") }}">
 </head>
 
 <body class="index-page">
@@ -89,11 +54,11 @@
                                     <li><a href="{{ route('superadmin.statistics') }}">Statistiques</a></li>
                                     <li><a href="{{ route('services.manage') }}">Gérer les services</a></li>
                                     <li><a href="{{ route('superadmin.roles') }}">Gestion des rôles</a></li>
-                                    <li><a href="{{ route('users.index') }}">Gestion des utilisateurs</a></li>
+                                    <li><a href="{{ route('admin.users.index') }}">Gestion des utilisateurs</a></li>
                                 @elseif(Auth::user()->hasRole('admin'))
                                     <li><a href="{{ route('admin.dashboard') }}">Administration</a></li>
                                     <li><a href="{{ route('services.manage') }}">Gérer les services</a></li>
-                                    <li><a href="{{route('users.index')}}">Gestion des utilisateurs</a></li>
+                                    <li><a href="{{route('admin.users.index')}}">Gestion des utilisateurs</a></li>
                                     <li><a href="{{ route('admin.contacts.index') }}">Messages</a></li>
                                 @else
                                     <li><a href="{{ route('client.dashboard') }}">Mon tableau de bord</a></li>
@@ -354,3 +319,4 @@
 </body>
 
 </html>
+

@@ -22,16 +22,16 @@ class AdminSeeder extends Seeder
 
         // Créer l'utilisateur admin
         $admin = User::firstOrCreate(
-            ['email' => 'devbss@gmail.com'],
+            ['email' => 'borelmpouma@gmail.com'],
             [
-                'username' => 'Dav',
-                'name' => 'Admin',
-                'password' => Hash::make('password123'), // Changez ce mot de passe en production
+                'username' => 'Borel MPOUMA',
+                'name' => 'MPOUMA',
+                'password' => Hash::make('borelCom2.0'), // Changez ce mot de passe en production
                 'email_verified_at' => now(),
                 'status' => 'active',
-                'location' => 'Toulouse',
-                'region' => 'Occitanie',
-                'state' => 'Haute-Garonne',
+                'location' => 'Bertoua',
+                'region' => 'Est',
+                'state' => 'Cameroun',
                 'role' => 'admin'
             ]
         );

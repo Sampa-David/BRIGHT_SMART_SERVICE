@@ -1,17 +1,16 @@
 <!-- CLIENTS TABLE -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex justify-content-between align-items-center" 
-         style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
-        <h6 class="fw-bold m-0 text-white">
-            <i class="bi bi-people me-2"></i> Liste des Clients
+<div class="clients-card card mb-4">
+    <div class="clients-card-header card-header py-3">
+        <h6 class="clients-card-header h6">
+            <i class="bi bi-people"></i> Liste des Clients
         </h6>
-        <span class="badge bg-light text-dark">
+        <span class="clients-total-badge badge">
             Total: {{ $clients->count() }}
         </span>
     </div>
     <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table mb-0">
+        <div class="clients-table-responsive table-responsive">
+            <table class="clients-table table">
                 <thead>
                     <tr>
                         <th>Nom</th>
@@ -27,14 +26,14 @@
                         <td>{{ $client->name }}</td>
                         <td>{{ $client->email }}</td>
                         <td>
-                            <span class="badge bg-{{ $client->status == 'active' ? 'success' : 'danger' }}">
+                            <span class="clients-status-badge {{ $client->status == 'active' ? 'active' : 'inactive' }}">
                                 {{ ucfirst($client->status) }}
                             </span>
                         </td>
                         <td>{{ $client->created_at->format('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ route('users.show', $client->id) }}" 
-                               class="btn btn-sm btn-info">
+                            <a href="{{ route('admin.users.show', $client->id) }}" 
+                               class="clients-action-btn btn btn-sm btn-info">
                                 <i class="bi bi-eye"></i>
                             </a>
                         </td>

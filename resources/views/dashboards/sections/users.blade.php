@@ -39,10 +39,10 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">

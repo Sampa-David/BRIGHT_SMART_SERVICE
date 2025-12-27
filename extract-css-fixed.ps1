@@ -1,5 +1,5 @@
 # Script PowerShell pour extraire et externaliser le CSS des fichiers Blade
-# Usage: .\extract-css.ps1
+# Usage: .\extract-css-fixed.ps1
 
 # Configuration
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -9,7 +9,7 @@ $cssPath = "$projectRoot\public\css\views"
 # Créer le répertoire CSS s'il n'existe pas
 if (-not (Test-Path $cssPath)) {
     New-Item -ItemType Directory -Path $cssPath -Force | Out-Null
-    Write-Host "✅ Répertoire créé: $cssPath" -ForegroundColor Green
+    Write-Host "Répertoire créé: $cssPath" -ForegroundColor Green
 }
 
 # Compteurs
@@ -27,13 +27,16 @@ function Extract-CSS {
         # Lire le contenu du fichier
         $content = Get-Content -Path $filePath -Raw -Encoding UTF8
         
+        # Pattern pour trouver le CSS
+        $pattern = '(?s)<style[^>]*>(.*?)</style>'
+        
         # Vérifier si le fichier contient du CSS
-        if ($content -notmatch [regex]'<style[^>]*>[\s\S]*?</style>') {
+        if ($content -notmatch $pattern) {
             return $false
         }
 
         # Extraire le CSS
-        if ($content -match [regex]'<style[^>]*>([\s\S]*?)</style>') {
+        if ($content -match $pattern) {
             $cssContent = $matches[1]
             
             # Créer un nom de fichier CSS
@@ -43,15 +46,15 @@ function Extract-CSS {
             
             # Écrire le CSS dans le nouveau fichier
             Set-Content -Path $cssFilePath -Value $cssContent.Trim() -Encoding UTF8 -Force
-            Write-Host "📝 CSS créé: $cssFileName" -ForegroundColor Cyan
+            Write-Host "CSS créé: $cssFileName" -ForegroundColor Cyan
             
             # Remplacer le CSS interne par un lien vers le fichier CSS
-            $linkTag = "`n    <link rel=`"stylesheet`" href=`"{{ asset('css/views/$cssFileName') }}`">`n"
-            $newContent = $content -replace [regex]'<style[^>]*>[\s\S]*?</style>', $linkTag
+            $replacement = '    <link rel="stylesheet" href="{{ asset("css/views/' + $cssFileName + '") }}">'
+            $newContent = $content -replace $pattern, $replacement
             
             # Écrire le contenu modifié
             Set-Content -Path $filePath -Value $newContent -Encoding UTF8 -Force
-            Write-Host "✅ Vue mise à jour: $(Split-Path -Leaf $filePath)" -ForegroundColor Green
+            Write-Host "Vue mise à jour: $(Split-Path -Leaf $filePath)" -ForegroundColor Green
             
             return $true
         }
@@ -59,13 +62,13 @@ function Extract-CSS {
         return $false
     }
     catch {
-        Write-Host "❌ Erreur pour $filePath : $_" -ForegroundColor Red
+        Write-Host "Erreur pour $filePath : $_" -ForegroundColor Red
         return $false
     }
 }
 
 # Traiter tous les fichiers Blade
-Write-Host "`n🔍 Recherche des fichiers .blade.php avec CSS interne...`n" -ForegroundColor Yellow
+Write-Host "`nRecherche des fichiers .blade.php avec CSS interne...`n" -ForegroundColor Yellow
 
 $bladeFiles = Get-ChildItem -Path $viewsPath -Filter "*.blade.php" -Recurse
 
@@ -78,14 +81,12 @@ foreach ($file in $bladeFiles) {
 
 # Afficher le résumé
 Write-Host "`n" -ForegroundColor White
-Write-Host "╔════════════════════════════════════════╗" -ForegroundColor Green
-Write-Host "║     Résumé du traitement              ║" -ForegroundColor Green
-Write-Host "╠════════════════════════════════════════╣" -ForegroundColor Green
-Write-Host "║ 📊 Fichiers traités : $totalFiles" -ForegroundColor Green
-Write-Host "║ ✅ Réussis : $processedFiles" -ForegroundColor Green
-Write-Host "║ 📁 Fichiers CSS créés: $processedFiles" -ForegroundColor Green
-Write-Host "║ 🛑 Erreurs : $errorFiles" -ForegroundColor Green
-Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Green
+Write-Host "==== Résumé du traitement ====" -ForegroundColor Green
+Write-Host "Fichiers traités: $totalFiles" -ForegroundColor Green
+Write-Host "Réussis: $processedFiles" -ForegroundColor Green
+Write-Host "Fichiers CSS créés: $processedFiles" -ForegroundColor Green
+Write-Host "Erreurs: $errorFiles" -ForegroundColor Green
+Write-Host "============================" -ForegroundColor Green
 
-Write-Host "`n✨ Extraction du CSS terminée !" -ForegroundColor Green
-Write-Host "📂 Les fichiers CSS sont dans: public/css/views/" -ForegroundColor Cyan
+Write-Host "`nExtraction du CSS terminée !" -ForegroundColor Green
+Write-Host "Les fichiers CSS sont dans: public/css/views/" -ForegroundColor Cyan

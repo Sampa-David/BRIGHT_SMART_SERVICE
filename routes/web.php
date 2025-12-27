@@ -86,24 +86,21 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Gestion des utilisateurs
-        Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class)->names([
+            'index' => 'admin.users.index',
+            'create' => 'admin.users.create',
+            'store' => 'admin.users.store',
+            'show' => 'admin.users.show',
+            'edit' => 'admin.users.edit',
+            'update' => 'admin.users.update',
+            'destroy' => 'admin.users.destroy',
+        ]);
     });
 
     // Routes Client
     Route::middleware([CheckUserRole::class.':client'])->group(function () {
         Route::get('/dashboard/client', [DashboardController::class, 'clientDashboard'])->name('client.dashboard');
     });
-
-    // Gestion des contacts (admin)
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/contacts', [App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contacts.index');
-        Route::get('/contacts/{contact}', [App\Http\Controllers\Admin\ContactController::class, 'show'])->name('contacts.show');
-        Route::post('/contacts/{contact}', [App\Http\Controllers\Admin\ContactController::class, 'update'])->name('contacts.update');
-        Route::post('/contacts/{contact}/respond', [App\Http\Controllers\Admin\ContactController::class, 'respond'])->name('contacts.respond');
-    });
-    
-    // Gestion des utilisateurs
-    Route::resource('users', UserController::class);
 
    });
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -23,67 +23,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Custom Variables -->
-    <style>
-        /* Global Fonts */
-        :root {
-            --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-            --heading-font: "Quicksand", sans-serif;
-            --nav-font: "Poppins", sans-serif;
-        }
-
-        /* Global Colors */
-        :root { 
-            --background-color: #f8f9fa;
-            --default-color: #1B1464;
-            --heading-color: #1B1464;
-            --accent-color: #FF6B00;
-            --surface-color: #f9f9f9;
-            --contrast-color: #fcfaf9;
-        }
-
-        .back-to-home {
-            margin-top: 5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .back-to-home .btn {
-            background-color: transparent;
-            color: var(--default-color);
-            border: 2px solid var(--accent-color);
-            transition: all 0.3s ease;
-            font-family: var(--heading-font);
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-        }
-
-        .back-to-home .btn:hover {
-            background-color: var(--accent-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(27, 20, 100, 0.15);
-        }
-
-        .back-to-home .btn i {
-            transition: transform 0.3s ease;
-        }
-
-        .back-to-home .btn:hover i {
-            transform: translateX(-4px);
-        }
-
-        body {
-            font-family: var(--default-font);
-            background-color: var(--background-color);
-            color: var(--default-color);
-            line-height: 1.6;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--heading-font);
-            
-        }
-    </style>
+        <link rel="stylesheet" href="{{ asset("css/views/contact.blade.css") }}">
 </head>
 <body>
 
@@ -310,3 +250,4 @@
     </div>
 </body>
 </html>
+

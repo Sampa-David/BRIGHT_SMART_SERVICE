@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -14,278 +14,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
-    <style>
-        :root {
-            --primary-color: #FF6B6B;
-            --secondary-color: #4ECDC4;
-            --dark-color: #2C3E50;
-            --light-color: #F7F9FC;
-            --success-color: #2ECC71;
-            --warning-color: #F1C40F;
-            --danger-color: #E74C3C;
-            --info-color: #3498DB;
-            --gray-color: #95A5A6;
-            --gray-light-color: #ECF0F1;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--light-color);
-            color: var(--dark-color);
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 1rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .navbar-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar-brand {
-            color: white;
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Container */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Form Card */
-        .form-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            overflow: hidden;
-            margin-top: 2rem;
-        }
-
-        .form-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 2rem;
-            color: white;
-            text-align: center;
-        }
-
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-subtitle {
-            opacity: 0.9;
-            font-size: 1rem;
-        }
-
-        .form-body {
-            padding: 2rem;
-        }
-
-        /* Form Groups */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid var(--gray-light-color);
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(255,107,107,0.1);
-        }
-
-        /* Form Grid */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), #ff8585);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: var(--gray-light-color);
-            color: var(--dark-color);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 2px solid var(--gray-light-color);
-        }
-
-        /* Alert Messages */
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .alert-success {
-            background: var(--success-color);
-            color: white;
-        }
-
-        .alert-danger {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        /* Avatar Preview */
-        .avatar-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            overflow: hidden;
-            border: 3px solid white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .avatar-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar-upload {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        /* Password Toggle */
-        .password-group {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--gray-color);
-            cursor: pointer;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .navbar-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .navbar-nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-    </style>
+        <link rel="stylesheet" href="{{ asset("css/views/UserEdit.blade.css") }}">
 </head>
 <body>
     <!-- Navigation -->
@@ -343,7 +72,7 @@
             </div>
 
             <div class="form-body">
-                <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -441,7 +170,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                             <i class="bi bi-x"></i> Annuler
                         </a>
                         <button type="submit" class="btn btn-primary">
@@ -519,3 +248,4 @@
     </script>
 </body>
 </html>
+
