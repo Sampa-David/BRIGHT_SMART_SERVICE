@@ -17,7 +17,8 @@ use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ServiceRequestController;
 
-
+// Include Auth Routes
+require __DIR__ . '/auth.php';
 // Health check route
 Route::get('/health', function() {
     return response()->json(['status' => 'healthy'], 200);

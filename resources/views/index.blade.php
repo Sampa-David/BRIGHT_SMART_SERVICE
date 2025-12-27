@@ -26,6 +26,7 @@
 
   <!-- Main CSS File -->
   <link href="css/main.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/views/index-home.blade.css') }}">
 
   <!-- =======================================================
   * Template Name: Clarity

@@ -90,7 +90,7 @@
                     <i class="bi bi-person-plus"></i>
                     S'inscrire
                 </a>
-                <a href="{{ route('login') }}" class="nav-cta">
+                <a href="{{ route('auth.login') }}" class="nav-cta">
                     <i class="bi bi-box-arrow-in-right"></i>
                     Connexion
                 </a>

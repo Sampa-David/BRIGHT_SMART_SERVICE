@@ -19,7 +19,7 @@ class TwoFactorController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            return redirect()->route('login');
+            return redirect()->route('auth.login');
         }
         return view('auth.2fa.email', ['user' => $user]);
     }
@@ -40,7 +40,7 @@ class TwoFactorController extends Controller
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Non authentifié'], 401);
             }
-            return redirect()->route('login');
+            return redirect()->route('auth.login');
         }
 
         $userRoles = $user->roles ? $user->roles()->pluck('slug')->toArray() : [];

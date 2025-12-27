@@ -16,6 +16,34 @@ class ContactController extends Controller
         return view('admin.contacts.index', compact('contacts'));
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+            'send_email' => 'nullable|boolean',
+        ]);
+
+        // Create the contact message
+        $contact = Contact::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'message' => $validated['message'],
+            'status' => 'new',
+            'contact_method' => 'email',
+            'admin_response' => null,
+        ]);
+
+        // Send email if requested
+        if ($request->has('send_email') && $request->send_email) {
+            Mail::to($contact->email)->send(new \App\Mail\AdminMessageMail($contact));
+        }
+
+        return redirect()->back()->with('success', 'Message créé et envoyé avec succès à ' . $contact->name);
+    }
+
     public function show(Contact $contact)
     {
         return view('admin.contacts.show', compact('contact'));

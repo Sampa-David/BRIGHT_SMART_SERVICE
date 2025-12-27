@@ -25,6 +25,7 @@
 
   <!-- Main CSS File -->
   <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/views/show.blade.css') }}">
 </head>
 
 <body class="service-details-page">

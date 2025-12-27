@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
@@ -20,7 +23,7 @@
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
                 <i class="bi bi-speedometer2"></i>
                 <span>Admin</span>
@@ -32,10 +35,20 @@
                 <li><a href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> Utilisateurs</a></li>
                 <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
             </ul>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </aside>
 
-        <!-- Menu Burger -->
-        <button class="menu-burger" id="menuBurger">
+        <!-- Menu Burger Button (Mobile) - Navigation -->
+        <button class="menu-burger" id="menuBurger" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Menu Burger Button (Mobile) - Actions -->
+        <button class="menu-burger menu-burger-actions" id="menuBurgerActions" aria-label="Toggle actions menu">
             <span></span>
             <span></span>
             <span></span>
@@ -43,90 +56,33 @@
 
         <!-- Main Content -->
         <div class="main-content">
-</head>
-<body>
-    <!-- Toggle Sidebar Button -->
-    <button id="sidebarToggle" class="sidebar-toggle">
-        <i class="bi bi-list"></i>
-    </button>
-
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <a href="{{route('welcome')}}" class="sidebar-brand">
-            {{ config('app.name') }}
-        </a>
-        <hr style="border-color: rgba(255,255,255,.15)">
-        @if(auth()->user()->hasRole('admin'))
-        <div class="nav-item">
-            <a href="{{ route('admin.dashboard') }}" class="active">
-                <i class="bi bi-speedometer2"></i>
-                <span>Administration</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="{{ route('services.manage') }}">
-                <i class="bi bi-gear"></i>
-                <span>Gérer les services</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="{{ route('admin.users.index') }}">
-                <i class="bi bi-people"></i>
-                <span>Gestion des utilisateurs</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="{{ route('admin.contacts.index') }}">
-                <i class="bi bi-envelope"></i>
-                <span>Messages</span>
-            </a>
-        </div>
-        @endif
-        <div class="nav-item">
-            <a href="{{ route('welcome') }}">
-                <i class="bi bi-home"></i>
-                <span>Voir le site</span>
-            </a>
-        </div>
-        <hr style="border-color: rgba(255,255,255,.15)">
-        <div class="nav-item">
-            <a href="{{ route('profile.edit') }}">
-                <i class="bi bi-person"></i>
-                <span>Mon profil</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="d-flex align-items-center">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Déconnexion</span>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container-fluid">
+            <div class="container-fluid">
         <!-- Header -->
         <div class="header d-flex justify-content-between align-items-center">
             <h1 style="font-size: 1.75rem; color: var(--gray-dark); margin: 0;">
                 Tableau de bord Administrateur
-                
             </h1>
-            <div style="display: flex;justify-content:space-between">
-                <a href="{{ route('services.create') }}" class="btn btn-primary mr-2">
-                    <i class="bi bi-plus-lg"></i> Nouveau service
-                </a>
-                <button type="button" class="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#addTeamMemberModal">
-                    <i class="bi bi-person-plus"></i> Ajouter un membre
-                </button>
-                <a href="{{ route('admin.contacts.index') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-envelope"></i> Messages
-                    @if($stats['new_messages'] > 0)
-                        <span class="badge bg-danger ml-2">{{ $stats['new_messages'] }}</span>
-                    @endif
-                </a>
-            </div>
+            <!-- Actions Sidebar (In Header for Desktop) -->
+            <aside class="sidebar sidebar-actions" id="sidebarActions">
+                <div class="actions-list">
+                    <a href="{{ route('services.create') }}" class="action-item">
+                        <i class="bi bi-plus-lg"></i>
+                        <span>Nouveau service</span>
+                    </a>
+                    <button type="button" class="action-item" data-bs-toggle="modal" data-bs-target="#sendMessageModal">
+                        <i class="bi bi-envelope"></i>
+                        <span>Envoyer un message</span>
+                    </button>
+                    <a href="{{ route('admin.contacts.index') }}" class="action-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>Messages
+                            @if($stats['new_messages'] > 0)
+                                <span class="badge bg-danger ms-2">{{ $stats['new_messages'] }}</span>
+                            @endif
+                        </span>
+                    </a>
+                </div>
+            </aside>
         </div>
 
         <!-- Stats Cards -->
@@ -365,126 +321,143 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>    <!-- Users List -->
-    <div class="card shadow mb-4 compact">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center" 
-             style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
-            <h6 style="font-weight: 700; margin: 0; color: white;">
-                <i class="bi bi-people me-2"></i> Liste des Clients
-            </h6>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Email</th>
-                            <th>Statut</th>
-                            <th>Date d'inscription</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($clients))
-                        @foreach($clients as $client)
-                        <tr>
-                            <td>{{ $client->name }}</td>
-                            <td>{{ $client->email }}</td>
-                            <td>
-                                <span class="badge bg-{{ $client->status == 'active' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($client->status) }}
-                                </span>
-                            </td>
-                            <td>{{ $client->created_at->format('d/m/Y') }}</td>
-                            <td>
-                                <a href="{{ route('admin.users.show', $client->id) }}" 
-                                   class="btn btn-sm" 
-                                   style="background-color: var(--info); color: white;">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        @endforeach
-                        @endif
-                    </tbody>
-                </table>
+    </div>
+
+    <!-- Modal: Send Message -->
+    <div class="modal fade" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+                    <h5 class="modal-title" id="sendMessageModalLabel">
+                        <i class="bi bi-envelope-plus me-2"></i> Envoyer un message
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.contacts.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="recipient_email" class="form-label">Email du destinataire</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                   id="recipient_email" name="email" required placeholder="destinataire@example.com">
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient_name" class="form-label">Nom du destinataire</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                   id="recipient_name" name="name" required placeholder="Nom complet">
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="message_subject" class="form-label">Sujet</label>
+                            <input type="text" class="form-control @error('subject') is-invalid @enderror" 
+                                   id="message_subject" name="subject" required placeholder="Sujet du message">
+                            @error('subject')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="message_body" class="form-label">Message</label>
+                            <textarea class="form-control @error('message') is-invalid @enderror" 
+                                      id="message_body" name="message" rows="6" required 
+                                      placeholder="Écrivez votre message ici..."></textarea>
+                            @error('message')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="send_email" name="send_email" value="1" checked>
+                            <label class="form-check-label" for="send_email">
+                                Envoyer un email au destinataire
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send me-2"></i> Envoyer
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Sidebar Toggle Functionality
+        // Menu Burger Toggle for Mobile - Navigation Sidebar
         document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('sidebarToggle');
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            
-            // Restaurer l'état de la sidebar depuis le localStorage
-            if (localStorage.getItem('sidebarCollapsed') === 'true') {
-                body.classList.add('sidebar-collapsed');
-            }
-            
-            toggleBtn.addEventListener('click', function() {
-                body.classList.toggle('sidebar-collapsed');
-                
-                // Sauvegarder l'état dans le localStorage
-                localStorage.setItem('sidebarCollapsed', body.classList.contains('sidebar-collapsed'));
-            });
-            
-            // Fermer la sidebar en mode mobile lors du clic en dehors
-            document.addEventListener('click', function(event) {
-                if (window.innerWidth <= 768) {
-                    if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
-                        body.classList.add('sidebar-collapsed');
-                    }
-                }
-            });
+            const menuBurger = document.getElementById('menuBurger');
+            const sidebar = document.getElementById('sidebar');
 
-            // Close sidebar when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
-                    sidebar.classList.remove('active');
-                }
-            });
-        });
-
-        // Active menu item
-        document.querySelectorAll('.nav-item a').forEach(link => {
-            if (link.getAttribute('href') === window.location.pathname) {
-                link.classList.add('active');
-            }
-        });
-
-        // Menu Burger Toggle
-        const menuBurger = document.getElementById('menuBurger');
-        const sidebar = document.querySelector('.sidebar');
-
-        if (menuBurger) {
-            menuBurger.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                menuBurger.classList.toggle('active');
-            });
-
-            // Close menu when clicking on a link
-            document.querySelectorAll('.sidebar-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    sidebar.classList.remove('active');
-                    menuBurger.classList.remove('active');
+            if (menuBurger && sidebar) {
+                menuBurger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('active');
+                    menuBurger.classList.toggle('active');
                 });
-            });
 
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!sidebar.contains(event.target) && !menuBurger.contains(event.target)) {
-                    sidebar.classList.remove('active');
-                    menuBurger.classList.remove('active');
+                // Close menu when clicking on a link
+                document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        sidebar.classList.remove('active');
+                        menuBurger.classList.remove('active');
+                    });
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!sidebar.contains(event.target) && !menuBurger.contains(event.target)) {
+                        sidebar.classList.remove('active');
+                        menuBurger.classList.remove('active');
+                    }
+                });
+            }
+
+            // Active menu item
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                if (link.getAttribute('href') === window.location.pathname) {
+                    link.classList.add('active');
                 }
             });
-        }
+        });
+
+        // Menu Burger Toggle for Mobile - Actions Sidebar (Right)
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBurgerActions = document.getElementById('menuBurgerActions');
+            const sidebarActions = document.getElementById('sidebarActions');
+
+            if (menuBurgerActions && sidebarActions) {
+                menuBurgerActions.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebarActions.classList.toggle('active');
+                    menuBurgerActions.classList.toggle('active');
+                });
+
+                // Close menu when clicking on a link
+                document.querySelectorAll('.actions-list a, .actions-list button').forEach(item => {
+                    item.addEventListener('click', function() {
+                        sidebarActions.classList.remove('active');
+                        menuBurgerActions.classList.remove('active');
+                    });
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!sidebarActions.contains(event.target) && !menuBurgerActions.contains(event.target)) {
+                        sidebarActions.classList.remove('active');
+                        menuBurgerActions.classList.remove('active');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

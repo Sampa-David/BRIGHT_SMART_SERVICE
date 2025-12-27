@@ -14,7 +14,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
-        <link rel="stylesheet" href="{{ asset("css/views/index.blade.css") }}">
+        <link rel="stylesheet" href="{{ asset("css/views/contacts-index.blade.css") }}">
 </head>
 <body>
     <!-- Navigation -->
