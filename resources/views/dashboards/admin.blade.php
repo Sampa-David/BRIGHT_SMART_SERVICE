@@ -6,21 +6,26 @@
     <title>Administration - {{ config('app.name') }}</title>
     @include('partials.favicons')
     
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
         :root {
-            --primary: #4e73df;
-            --success: #1cc88a;
-            --info: #36b9cc;
-            --warning: #f6c23e;
-            --danger: #e74a3b;
-            --dark-blue: #224abe;
-            --gray: #858796;
-            --gray-dark: #5a5c69;
-            --light: #f8f9fc;
-            --dark: #3a3b45;
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --dark-color: #2C3E50;
+            --light-color: #F7F9FC;
+            --success-color: #2ECC71;
+            --warning-color: #F1C40F;
+            --danger-color: #E74C3C;
+            --info-color: #3498DB;
+            --gray-color: #95A5A6;
+            --gray-light-color: #ECF0F1;
         }
 
         * {
@@ -30,17 +35,19 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fc;
-            color: #858796;
-            line-height: 1.5;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container-fluid {
-            padding: 2rem;
-            margin-left: 280px; /* Pour le sidebar */
-            transition: margin 0.3s ease;
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         /* Sidebar */
@@ -48,6 +55,409 @@
             position: fixed;
             left: 0;
             top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 30px 20px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-menu a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding-left: 25px;
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            transition: margin 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .admin-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Cards */
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-card.success {
+            border-left-color: var(--success-color);
+        }
+
+        .stat-card.success .value {
+            color: var(--success-color);
+        }
+
+        .stat-card.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .stat-card.warning .value {
+            color: var(--warning-color);
+        }
+
+        .stat-card.danger {
+            border-left-color: var(--danger-color);
+        }
+
+        .stat-card.danger .value {
+            color: var(--danger-color);
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-top: 30px;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .table thead th {
+            background: var(--gray-light-color);
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark-color);
+            border-bottom: 2px solid #ddd;
+        }
+
+        .table tbody td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--light-color);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #3db8b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d43a2a;
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        /* Menu Burger */
+        .menu-burger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .menu-burger span {
+            width: 25px;
+            height: 2.5px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-burger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: rgba(46,204,113,0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background: rgba(231,74,60,0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-info {
+            background: rgba(52,152,219,0.1);
+            color: var(--info-color);
+            border-left: 4px solid var(--info-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .menu-burger {
+                display: flex;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .admin-header h1 {
+                font-size: 24px;
+            }
+
+            .table {
+                font-size: 13px;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+
+            .admin-header h1 {
+                font-size: 20px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-card .value {
+                font-size: 24px;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+
+            .table {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="bi bi-speedometer2"></i>
+                <span>Admin</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="{{ route('admin.dashboard') }}" class="active"><i class="bi bi-house"></i> Tableau de bord</a></li>
+                <li><a href="{{ route('admin.contacts.index') }}"><i class="bi bi-envelope"></i> Messages</a></li>
+                <li><a href="{{ route('services.manage') }}"><i class="bi bi-gear"></i> Services</a></li>
+                <li><a href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> Utilisateurs</a></li>
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
+            </ul>
+        </aside>
+
+        <!-- Menu Burger -->
+        <button class="menu-burger" id="menuBurger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Main Content -->
+        <div class="main-content">
             bottom: 0;
             width: 280px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -953,6 +1363,33 @@
                 link.classList.add('active');
             }
         });
+
+        // Menu Burger Toggle
+        const menuBurger = document.getElementById('menuBurger');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (menuBurger) {
+            menuBurger.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                menuBurger.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    menuBurger.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!sidebar.contains(event.target) && !menuBurger.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                    menuBurger.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
