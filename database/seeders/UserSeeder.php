@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Désactiver les vérifications de clés étrangères pour une meilleure performance
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         // Créer 10 000 utilisateurs avec le rôle "user"
         User::factory(10000)->create();
@@ -48,6 +48,6 @@ class UserSeeder extends Seeder
         }
 
         // Réactiver les vérifications de clés étrangères
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }
