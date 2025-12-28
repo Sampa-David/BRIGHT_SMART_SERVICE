@@ -16,9 +16,9 @@
     
     <!-- AOS CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-        <link rel="stylesheet" href="{{ asset("css/views/ServiceList.blade.css") }}">
-        <link rel="stylesheet" href="{{ asset("css/views/ServiceList.blade.css") }}">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset("css/views/ServiceList.blade.css") }}">
 </head>
 <body>
     <!-- Navbar -->
@@ -64,7 +64,7 @@
             </div>
 
             <div class="row g-4">
-                @foreach($services as $service)
+                @forelse($services as $service)
                     <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                         <div class="service-card">
                             <div class="service-image">
@@ -79,18 +79,116 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="bi bi-inbox"></i>
+                            </div>
+                            <h3>Aucun service disponible</h3>
+                            <p>Nos services seront bientôt disponibles. Revenez nous visiter!</p>
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
 
-    <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row gy-4">
+                    <!-- À propos -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="footer-about">
+                            <div class="logo d-flex align-items-center">
+                                <img src="{{ asset('img/logo.webp') }}" alt="{{ config('app.name') }}">
+                                <span>{{ config('app.name') }}</span>
+                            </div>
+                            <p>Nous créons des solutions digitales innovantes pour transformer votre présence en ligne et stimuler votre croissance.</p>
+                            <div class="social-links d-flex mt-4">
+                                <a href="#" title="Twitter"><i class="bi bi-twitter-x"></i></a>
+                                <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                                <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+                                <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
 
-    <script>
+                    <!-- Liens utiles -->
+                    <div class="col-lg-2 col-6">
+                        <div class="footer-links">
+                            <h4>Liens utiles</h4>
+                            <ul>
+                                <li><i class="bi bi-chevron-right"></i> <a href="#hero">Accueil</a></li>
+                                <li><i class="bi bi-chevron-right"></i> <a href="#about">À propos</a></li>
+                                <li><i class="bi bi-chevron-right"></i> <a href="#services">Services</a></li>
+                                <li><i class="bi bi-chevron-right"></i> <a href="#contact">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Nos services -->
+                    <div class="col-lg-2 col-6">
+                        <div class="footer-links">
+                            <h4>Nos services</h4>
+                            <ul>
+                                @forelse($services as $service)
+                                    <li>
+                                        <i class="bi bi-chevron-right"></i>
+                                        <span class="service-name">{{ $service->name }}</span>
+                                        <a href="{{ route('services.ServiceShow', $service->id) }}" class="service-link" title="Voir {{ $service->name }}">
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                @empty
+                                    <li class="text-muted"><em>Aucun service disponible</em></li>
+                                @endforelse
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="footer-contact">
+                            <h4>Contactez-nous</h4>
+                            <p>
+                                <i class="bi bi-geo-alt"></i>
+                                kano<br>
+                                Bertoua, Cameroun<br><br>
+                                <i class="bi bi-phone"></i> <a href="tel:+33123456789">+237 6 88 66 16 42</a><br>
+                                <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">njonoussistephen@gmail.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; {{ date('Y') }} <strong>{{ config('app.name') }}</strong>. Tous droits réservés</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="credits">
+                            <a href="#">Mentions légales</a> | 
+                            <a href="#">Politique de confidentialité</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+        <!-- AOS JS -->
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
         AOS.init({
             duration: 1000,
             easing: 'ease-in-out',
@@ -98,7 +196,5 @@
             mirror: false
         });
     </script>
-
 </body>
 </html>
-

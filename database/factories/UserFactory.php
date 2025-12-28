@@ -15,6 +15,12 @@ class UserFactory extends Factory
      * The current password being used by the factory.
      */
     protected static ?string $password;
+    
+    /**
+     * Counter for unique usernames
+     */
+    protected static int $usernameCounter = 0;
+    protected static int $emailCounter = 0;
 
     /**
      * Define the model's default state.
@@ -24,9 +30,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => fake()->unique()->userName(),
+            'username' => 'user_' . (++self::$usernameCounter),
             'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => 'user_' . (self::$emailCounter++) .'client@gmail.com',
             'phone' => fake()->phoneNumber(),
             'location' => fake()->city(),
             'region' => fake()->state(),

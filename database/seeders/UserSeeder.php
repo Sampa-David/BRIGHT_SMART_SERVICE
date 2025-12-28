@@ -15,13 +15,30 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Désactiver les vérifications de clés étrangères pour une meilleure performance
-        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-        // Créer 10 000 utilisateurs avec le rôle "user"
+        // Supprimer uniquement les utilisateurs avec le rôle "client" (garder les admins)
+        $clientRole = Role::where('slug', 'client')->first();
+        
+        if ($clientRole) {
+            // Supprimer les relations dans role_user pour les clients
+            DB::table('role_user')
+                ->where('role_id', $clientRole->id)
+                ->delete();
+            
+            // Supprimer les utilisateurs qui ont UNIQUEMENT le rôle client
+            User::whereIn('id', function ($query) use ($clientRole) {
+                $query->select('user_id')
+                    ->from('role_user')
+                    ->where('role_id', $clientRole->id);
+            })->delete();
+        }
+
+        // Créer 10 000 nouveaux utilisateurs avec le rôle "client"
         User::factory(10000)->create();
 
-        // Récupérer le rôle "user"
-        $userRole = Role::where('slug', 'user')->first();
+        // Récupérer le rôle "client"
+        $userRole = Role::where('slug', 'client')->first();
 
         // Si le rôle existe, attribuer le rôle à tous les utilisateurs créés
         if ($userRole) {
@@ -42,12 +59,12 @@ class UserSeeder extends Seeder
                 DB::table('role_user')->insertOrIgnore($roleUserData);
             }
 
-            $this->command->info('✓ 10 000 utilisateurs créés avec le rôle "user"');
+            $this->command->info('✓ 10 000 utilisateurs créés avec le rôle "client"');
         } else {
-            $this->command->warn('⚠ Le rôle "user" n\'existe pas. Assurez-vous d\'exécuter RoleSeeder en premier.');
+            $this->command->warn('⚠ Le rôle "client" n\'existe pas. Assurez-vous d\'exécuter RoleSeeder en premier.');
         }
 
         // Réactiver les vérifications de clés étrangères
-        //DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

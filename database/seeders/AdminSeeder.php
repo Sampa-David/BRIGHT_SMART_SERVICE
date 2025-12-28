@@ -22,15 +22,15 @@ class AdminSeeder extends Seeder
 
         // Créer l'utilisateur admin
         $admin = User::firstOrCreate(
-            ['email' => 'borelmpouma@gmail.com'],
+            ['email' => 'davidsampa@gmail.com'],
             [
-                'username' => 'Borel MPOUMA',
-                'name' => 'MPOUMA',
-                'password' => Hash::make('borelCom2.0'), // Changez ce mot de passe en production
+                'username' => 'Le Roi',
+                'name' => 'Sampa David',
+                'password' => Hash::make('Admindevbss2.0'), // Changez ce mot de passe en production
                 'email_verified_at' => now(),
                 'status' => 'active',
-                'location' => 'Bertoua',
-                'region' => 'Est',
+                'location' => 'Dschang',
+                'region' => 'Ouest',
                 'state' => 'Cameroun',
                 'role' => 'admin'
             ]
