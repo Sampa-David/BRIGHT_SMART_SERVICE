@@ -38,7 +38,7 @@ class ServiceController extends Controller
 
     public function store(Request $request){
         $data = $request->validate([
-            'name'=>'required|string|max:30|unique:services,name',
+            'name'=>'required|string|max:100|unique:services,name',
             'description'=>'required|string|',
             'image'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
@@ -56,7 +56,7 @@ class ServiceController extends Controller
     public function ServiceUpdate(Request $request, string $id){
         $service = Service::findOrFail($id);
         $data = $request->validate([
-            'name'=>'required|string|max:30|unique:services,name,'.$service->id,
+            'name'=>'required|string|max:100|unique:services,name,'.$service->id,
             'description'=>'required|string',
             'image'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
