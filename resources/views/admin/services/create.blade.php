@@ -110,20 +110,14 @@
                                     <label for="image" class="form-label">
                                         <i class="fas fa-image me-2"></i>Image du service
                                     </label>
-                                    <div class="input-group">
-                                        <input 
-                                            type="file" 
-                                            class="form-control @error('image') is-invalid @enderror" 
-                                            id="image" 
-                                            name="image" 
-                                            accept="image/jpeg,image/png,image/jpg"
-                                            required
-                                            style="display: none;"
-                                        >
-                                        <button type="button" class="btn btn-outline-secondary" id="imagePickerBtn" style="width: 100%;">
-                                            <i class="fas fa-image me-2"></i>Choisir une image
-                                        </button>
-                                    </div>
+                                    <input 
+                                        type="file" 
+                                        class="form-control @error('image') is-invalid @enderror" 
+                                        id="image" 
+                                        name="image" 
+                                        accept="image/jpeg,image/png,image/jpg"
+                                        required
+                                    >
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>Formats acceptés: JPG, JPEG, PNG | Taille max: 2MB
                                     </div>
@@ -153,70 +147,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- Modal Image Picker -->
-    <div class="modal fade image-picker-modal" id="imagePickerModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-image me-2"></i>Choisir une image
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-                    <!-- Initial Options -->
-                    <div id="imagePickerOptions">
-                        <div class="image-picker-options">
-                            <button type="button" class="image-option-btn" id="localStorageBtn">
-                                <i class="fas fa-folder-open"></i>
-                                <span>Stockage local</span>
-                            </button>
-                            <button type="button" class="image-option-btn" id="webSearchBtn">
-                                <i class="fas fa-search"></i>
-                                <span>Recherche Web</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Web Search Container -->
-                    <div class="web-search-container" id="webSearchContainer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="backBtn">
-                            <i class="fas fa-arrow-left me-2"></i>Retour
-                        </button>
-                        
-                        <div class="search-input-group">
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                id="searchInput" 
-                                placeholder="Rechercher des images..."
-                                value=""
-                            >
-                            <button type="button" class="btn btn-primary" id="searchBtn">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-
-                        <div id="imageGalleryContainer" class="loading-spinner" style="display: none;">
-                            <div class="spinner"></div>
-                        </div>
-
-                        <div id="imageGallery" class="image-gallery hidden"></div>
-                        <div id="noResults" class="no-results hidden">Aucune image trouvée</div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary hidden" id="confirmImageBtn" disabled>
-                        <i class="fas fa-check me-2"></i>Confirmer l'image
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

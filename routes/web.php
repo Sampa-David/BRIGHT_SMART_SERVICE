@@ -16,7 +16,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ServiceRequestController;
-use App\Http\Controllers\ImageSearchController;
 
 // Include Auth Routes
 require __DIR__ . '/auth.php';
@@ -153,9 +152,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/testimonials/{id}/approve', [TestimonialsController::class, 'TestimonialsApprove'])->name('testimonials.Approve');
         Route::delete('/testimonials/{id}', [TestimonialsController::class, 'TestimonialsDestroy'])->name('testimonials.Destroy');
     });
-
-// Image Search API
-Route::get('/api/search-images', [ImageSearchController::class, 'searchPixabay'])->name('api.search-images');
 
 // Profil utilisateur
 Route::middleware('auth')->group(function () {
