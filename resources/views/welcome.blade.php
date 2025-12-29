@@ -157,12 +157,12 @@
                         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                             <div class="service-card">
                                 <div class="service-icon">
-                                    <img src="{{ asset($service->image) }}" alt="{{ $service->title }}" class="img-fluid">
+                                    <img src="{{ asset($service->image) }}" alt="{{ $service->name }}" class="img-fluid">
                                 </div>
 
                                 <h4>
                                     <a href="{{ route('services.ServiceShow', $service->id) }}">
-                                        {{ $service->title }}
+                                        {{ $service->name }}
                                     </a>
                                 </h4>
 
@@ -170,8 +170,7 @@
 
                                 <div class="d-flex justify-content-between align-items-center mt-auto">
                                     <span class="price-tag">
-                                        <i class="bi bi-tag-fill"></i>
-                                        À partir de {{ number_format($service->price, 2, ',', ' ') }} €
+                                        
                                     </span>
                                     
                                     <a href="{{ route('services.ServiceShow', $service->id) }}" class="service-link">
