@@ -29,8 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== CONSTANTS =====
     const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
-    // Utilise Pixabay comme alternative (API libre sans authentification complexe)
-    const PIXABAY_API_KEY = '47340408-fa7adf893d0ccc108f99b0fbc';
     const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 
     // ===== MODAL STATE MANAGEMENT =====
@@ -193,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== IMAGE SEARCH HANDLERS =====
 
     /**
-     * Search images from Pixabay API
+     * Search images via Laravel API (which calls Pixabay)
      */
     const searchImages = async (query) => {
         query = query.trim();
@@ -218,15 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleVisibility(noResults, false);
 
         try {
-            const url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&per_page=12&orientation=horizontal`;
+            const url = new URL('/api/search-images', window.location.origin);
+            url.searchParams.append('query', query);
             
             console.log('Searching for:', query);
-            console.log('API URL:', url);
+            console.log('API URL:', url.toString());
 
-            const response = await fetch(url, {
+            const response = await fetch(url.toString(), {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             });
 
