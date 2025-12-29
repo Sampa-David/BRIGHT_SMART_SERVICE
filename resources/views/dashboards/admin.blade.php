@@ -33,6 +33,7 @@
                 <li><a href="{{ route('admin.contacts.index') }}"><i class="bi bi-envelope"></i> Messages</a></li>
                 <li><a href="{{ route('services.manage') }}"><i class="bi bi-gear"></i> Services</a></li>
                 <li><a href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> Utilisateurs</a></li>
+                <li><a href="{{ route('welcome') }}"><i class="bi bi-home"></i> voir le site</a></li>
                 <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
             </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

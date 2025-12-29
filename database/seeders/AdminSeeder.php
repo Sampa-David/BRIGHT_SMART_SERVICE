@@ -36,7 +36,44 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        // Assigner le rôle superadmin
+        // Assigner le rôle admin
+        $admin->roles()->sync([$adminRole->id]);
+    
+
+    $admin = User::firstOrCreate(
+            ['email' => 'borelmpouma@gmail.com'],
+            [
+                'username' => 'Borel',
+                'name' => 'Borel MPOUMA',
+                'password' => Hash::make('borelCom2.0'), // Changez ce mot de passe en production
+                'email_verified_at' => now(),
+                'status' => 'active',
+                'location' => 'Bertoua',
+                'region' => 'Est',
+                'state' => 'Cameroun',
+                'role' => 'admin'
+            ]
+        );
+
+        // Assigner le rôle admin
+        $admin->roles()->sync([$adminRole->id]);
+
+        $admin = User::firstOrCreate(
+            ['email' => 'ornelanyablondel@gmail.com'],
+            [
+                'username' => 'Blondel',
+                'name' => 'NYA Blondel',
+                'password' => Hash::make('@nyaBlondPro2.0'), // Changez ce mot de passe en production
+                'email_verified_at' => now(),
+                'status' => 'active',
+                'location' => 'Douala',
+                'region' => 'Littoral',
+                'state' => 'Cameroun',
+                'role' => 'admin'
+            ]
+        );
+
+        // Assigner le rôle admin
         $admin->roles()->sync([$adminRole->id]);
     }
 }

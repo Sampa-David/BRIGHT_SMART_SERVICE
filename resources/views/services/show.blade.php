@@ -71,14 +71,14 @@
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('welcome') }}"><i class="bi bi-house"></i> Accueil</a></li>
             <li class="breadcrumb-item"><a href="{{ route('services.ServiceList') }}">Services</a></li>
-            <li class="breadcrumb-item active current">{{ $service->title }}</li>
+            <li class="breadcrumb-item active current">{{ $service->name }}</li>
           </ol>
         </nav>
       </div>
 
       <div class="title-wrapper">
-        <h1>{{ $service->title }}</h1>
-        <p>{{ Str::limit($service->description, 120) }}</p>
+        <h1>{{ $service->name }}</h1>
+        <p>{{ Str::limit($service->description,120) }}</p>
       </div>
     </div>
 
@@ -89,11 +89,11 @@
           <!-- Service Overview -->
           <div class="col-lg-8">
             <div class="service-content">
-              <h2>{{ $service->title }}</h2>
+              <h2>{{ $service->name }}</h2>
               <p class="lead">{{ $service->description }}</p>
 
               <div class="service-image" data-aos="fade-up" data-aos-delay="200">
-                <img src="{{ asset($service->image) }}" alt="{{ $service->title }}" class="img-fluid rounded">
+                <img src="{{ asset($service->image) }}" alt="{{ $service->name }}" class="img-fluid rounded">
               </div>
 
               <!-- Service Features -->
@@ -184,10 +184,6 @@
                 <h4>Détails du service</h4>
                 <ul class="service-facts">
                   <li>
-                    <span class="fact-label">Prix :</span>
-                    <span class="fact-value">{{ number_format($service->price, 2, ',', ' ') }} €</span>
-                  </li>
-                  <li>
                     <span class="fact-label">Durée :</span>
                     <span class="fact-value">{{ $service->duration ?? '60' }} min</span>
                   </li>
@@ -237,9 +233,9 @@
                   @foreach($otherServices as $otherService)
                   <div class="service-item">
                     <a href="{{ route('services.ServiceShow', $otherService->id) }}" class="d-flex align-items-center">
-                      <img src="{{ asset('storage/' . $otherService->image) }}" alt="{{ $otherService->title }}" class="service-thumb">
+                      <img src="{{ asset('storage/' . $otherService->image) }}" alt="{{ $otherService->name }}" class="service-thumb">
                       <div class="service-info">
-                        <h5>{{ $otherService->title }}</h5>
+                        <h5>{{ $otherService->name }}</h5>
                         <span class="price">{{ number_format($otherService->price, 2, ',', ' ') }} €</span>
                       </div>
                     </a>
@@ -291,7 +287,7 @@
           <h4>Nos Services</h4>
           <ul>
             @foreach($footerServices as $footerService)
-            <li><a href="{{ route('services.ServiceShow', $footerService->id) }}">{{ $footerService->title }}</a></li>
+            <li><a href="{{ route('services.ServiceShow', $footerService->id) }}">{{ $footerService->name }}</a></li>
             @endforeach
           </ul>
         </div>

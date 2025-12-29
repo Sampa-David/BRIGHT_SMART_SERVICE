@@ -71,8 +71,6 @@
                         <tr>
                             <th>Image</th>
                             <th>Nom</th>
-                            <th>Titre</th>
-                            <th>Prix</th>
                             <th>Créé le</th>
                             <th>Actions</th>
                         </tr>
@@ -85,8 +83,6 @@
                                          class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
                                 </td>
                                 <td>{{ $service->name }}</td>
-                                <td>{{ $service->title }}</td>
-                                <td>{{ number_format($service->price, 2) }} €</td>
                                 <td>{{ $service->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
