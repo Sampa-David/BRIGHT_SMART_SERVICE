@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== CONSTANTS =====
     const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
-    const UNSPLASH_API_KEY = 'e8f7f5f7f0f7f7f7f7f7f7f7f7f7f7f7';
+    // Utilise Pixabay comme alternative (API libre sans authentification complexe)
+    const PIXABAY_API_KEY = '47340408-fa7adf893d0ccc108f99b0fbc';
     const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 
     // ===== MODAL STATE MANAGEMENT =====
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== IMAGE SEARCH HANDLERS =====
 
     /**
-     * Search images from Unsplash API
+     * Search images from Pixabay API
      */
     const searchImages = async (query) => {
         query = query.trim();
@@ -217,26 +218,35 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleVisibility(noResults, false);
 
         try {
-            const response = await fetch(
-                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=12&orientation=landscape`,
-                {
-                    headers: {
-                        'Authorization': `Client-ID ${UNSPLASH_API_KEY}`
-                    }
+            const url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&per_page=12&orientation=horizontal`;
+            
+            console.log('Searching for:', query);
+            console.log('API URL:', url);
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
                 }
-            );
+            });
+
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
 
             if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('API Error:', errorData);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('API Response:', data);
 
             // Hide loading spinner
             toggleVisibility(imageGalleryContainer, false);
 
-            if (data.results && data.results.length > 0) {
-                displayImages(data.results);
+            if (data.hits && data.hits.length > 0) {
+                displayPixabayImages(data.hits);
                 toggleVisibility(imageGallery, true);
                 toggleVisibility(noResults, false);
             } else {
@@ -246,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Search error:', error);
+            console.error('Error message:', error.message);
             toggleVisibility(imageGalleryContainer, false);
             toggleVisibility(imageGallery, false);
             toggleVisibility(noResults, true);
@@ -258,9 +269,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     /**
-     * Display images in gallery
+     * Display Pixabay images in gallery
      */
-    const displayImages = (images) => {
+    const displayPixabayImages = (images) => {
         imageGallery.innerHTML = '';
         
         images.forEach((image, index) => {
@@ -268,8 +279,8 @@ document.addEventListener('DOMContentLoaded', function() {
             item.className = 'image-gallery-item';
             
             const img = document.createElement('img');
-            img.src = image.urls.small;
-            img.alt = image.alt_description || `Image ${index + 1}`;
+            img.src = image.previewURL;
+            img.alt = image.tags || `Image ${index + 1}`;
             img.loading = 'lazy';
             
             item.appendChild(img);
@@ -286,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Select new image
                 item.classList.add('selected');
-                modalState.selectedImageUrl = image.urls.regular;
+                modalState.selectedImageUrl = image.largeImageURL;
                 
                 // Show confirm button
                 confirmImageBtn.disabled = false;
