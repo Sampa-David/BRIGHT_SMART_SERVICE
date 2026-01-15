@@ -15,9 +15,9 @@ class SuperAdminSeeder extends Seeder
     public function run(): void
     {
         $superAdminRole = Role::firstOrCreate([
-            'slug'=>'super-admin',
+            'slug'=>'superadmin',
             'name'=>'Super Administrateur',
-            'description '=>'Administrateur en chef ayant tout les privileges disponibles dans la plateforme'
+            'description'=>'Administrateur en chef ayant tout les privileges disponibles dans la plateforme'
         ]);
 
         //creons le super administrateur
@@ -37,6 +37,6 @@ class SuperAdminSeeder extends Seeder
         );
 
         //assigner le role superadmin
-        $superadmin->roles->sync([$superAdminRole->id]);
+        $superadmin->roles()->sync([$superAdminRole->id]);
     }
 }
