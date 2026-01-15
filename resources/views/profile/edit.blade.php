@@ -46,8 +46,13 @@
 
     <div class="container">
         @if(session('status') === 'profile-updated')
-        <div class="alert alert-success">
-            <i class="bi bi-check-circle"></i> Votre profil a été mis à jour avec succès.
+        <div class="alert alert-success" id="successAlert">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <i class="bi bi-check-circle" style="font-size: 1.5rem;"></i>
+                <div>
+                    <strong>Succès!</strong> Votre profil a été mis à jour avec succès.
+                </div>
+            </div>
         </div>
         @endif
 
@@ -80,7 +85,7 @@
                         <input type="file" 
                                name="profile_picture" 
                                id="profile_picture" 
-                               accept="image/*" 
+                               accept="image/jpeg,image/png,image/webp,image/jpg" 
                                style="display: none;">
                         <button type="button" 
                                 class="btn btn-primary" 
@@ -88,19 +93,24 @@
                             <i class="bi bi-camera"></i>
                             Changer la photo
                         </button>
+                        <p style="font-size: 0.85rem; color: var(--gray-color); margin-top: 0.5rem;">
+                            Format: JPG, PNG, WebP | Max: 2 MB
+                        </p>
                     </div>
 
                     <div class="form-grid">
-                        
-
                         <div class="form-group">
-                            <label for="name" class="form-label">Nom</label>
+                            <label for="name" class="form-label">Nom complet</label>
                             <input type="text" 
                                    id="name" 
                                    name="name" 
                                    class="form-input" 
                                    value="{{ old('name', $user->name) }}" 
-                                   required>
+                                   required
+                                   placeholder="Votre nom complet">
+                            @error('name')
+                            <span class="error-message">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -111,7 +121,11 @@
                                name="email" 
                                class="form-input" 
                                value="{{ old('email', $user->email) }}" 
-                               required>
+                               required
+                               placeholder="votre.email@example.com">
+                        @error('email')
+                        <span class="error-message">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -120,19 +134,27 @@
                                id="phone" 
                                name="phone" 
                                class="form-input" 
-                               value="{{ old('phone', $user->phone) }}">
+                               value="{{ old('phone', $user->phone) }}"
+                               placeholder="+237 6XX XXX XXX">
+                        @error('phone')
+                        <span class="error-message">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
-                        <label for="address" class="form-label">Adresse</label>
+                        <label for="location" class="form-label">Localisation</label>
                         <input type="text" 
-                               id="address" 
-                               name="address" 
+                               id="location" 
+                               name="location" 
                                class="form-input" 
-                               value="{{ old('address', $user->address) }}">
+                               value="{{ old('location', $user->location) }}"
+                               placeholder="Ville ou localisation">
+                        @error('location')
+                        <span class="error-message">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <div style="text-align: right;">
+                    <div style="text-align: right; margin-top: 2rem;">
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check2"></i>
                             Sauvegarder les modifications
@@ -193,6 +215,19 @@
         document.getElementById('profile_picture').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                // Validation de la taille
+                if (file.size > 2 * 4024 * 4024) {
+                    alert('Le fichier dépasse 16 MB');
+                    return;
+                }
+
+                // Validation du type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Format non autorisé. Utilisez JPG, PNG ou WebP');
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('avatarPreview').src = e.target.result;
@@ -200,6 +235,21 @@
                 reader.readAsDataURL(file);
             }
         });
+
+        // Afficher et masquer le message de succès
+        const successAlert = document.getElementById('successAlert');
+        if (successAlert) {
+            // Ajouter une animation d'entrée
+            successAlert.style.animation = 'slideDown 0.4s ease';
+            
+            // Masquer après 5 secondes
+            setTimeout(() => {
+                successAlert.style.animation = 'slideUp 0.4s ease';
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 400);
+            }, 5000);
+        }
 
         // Gestion du modal de suppression
         function showDeleteModal() {
@@ -222,15 +272,17 @@
 
         // Animation de la carte
         document.addEventListener('DOMContentLoaded', function() {
-            const profileCard = document.querySelector('.profile-card');
-            profileCard.style.opacity = '0';
-            profileCard.style.transform = 'translateY(20px)';
-            profileCard.style.transition = 'all 0.3s ease';
-            
-            setTimeout(() => {
-                profileCard.style.opacity = '1';
-                profileCard.style.transform = 'translateY(0)';
-            }, 100);
+            const profileCards = document.querySelectorAll('.profile-card');
+            profileCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.3s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + (index * 100));
+            });
         });
 
         // Confirmation de déconnexion
