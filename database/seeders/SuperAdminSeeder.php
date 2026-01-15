@@ -16,7 +16,7 @@ class SuperAdminSeeder extends Seeder
     {
         $superAdminRole = Role::firstOrCreate([
             'slug'=>'superadmin',
-            'name'=>'Super Administrateur',
+            'name'=>'Super-Administrateur',
             'description'=>'Administrateur en chef ayant tout les privileges disponibles dans la plateforme'
         ]);
 

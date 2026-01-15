@@ -127,7 +127,7 @@
                 </thead>
                 <tbody>
                     @forelse($users as $user)
-                    <tr>
+                    <tr class="@if($user->hasRole('superadmin')) superadmin-row @endif">
                         <td>
                             <div class="user-info">
                                 <img src="{{ asset($user->profile_picture ?? 'img/default-avatar.png') }}" 
@@ -161,15 +161,27 @@
                         <td>{{ $user->created_at->format('d/m/Y') }}</td>
                         <td>
                             <div class="actions">
-                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info" title="Voir">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning" title="Éditer">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <button class="btn btn-danger" onclick="confirmDelete({{ $user->id }})" title="Supprimer">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                @if($user->hasRole('superadmin'))
+                                    <button class="btn btn-info disabled-btn" onclick="showPermissionDenied()" title="Voir">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-warning disabled-btn" onclick="showPermissionDenied()" title="Éditer">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger disabled-btn" onclick="showPermissionDenied()" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                @else
+                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info" title="Voir">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning" title="Éditer">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-danger" onclick="confirmDelete({{ $user->id }})" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -204,6 +216,25 @@
                 </form>
                 <button class="btn btn-primary" onclick="closeModal('deleteModal')" style="flex: 1;">
                     <i class="bi bi-x"></i> Annuler
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Permission Denied Modal -->
+    <div class="modal" id="permissionModal">
+        <div class="modal-content permission-denied-modal">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeModal('permissionModal')">&times;</button>
+            </div>
+            <div class="permission-content">
+                <i class="bi bi-lock-fill permission-icon"></i>
+                <h2 class="modal-title">Accès refusé</h2>
+                <p>Vous n'avez pas assez de permissions pour effectuer cette action sur un Super Administrateur.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeModal('permissionModal')" style="width: 100%;">
+                    <i class="bi bi-check"></i> Fermer
                 </button>
             </div>
         </div>
@@ -272,6 +303,11 @@
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        // Afficher le modal d'accès refusé
+        function showPermissionDenied() {
+            showModal('permissionModal');
         }
 
         // Confirmation de suppression

@@ -152,41 +152,75 @@
         .table-container {
             background: white;
             border-radius: 15px;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 900px;
         }
 
         thead {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         th {
-            padding: 1.25rem 1.5rem;
+            padding: 1.25rem 1rem;
             text-align: left;
             font-weight: 600;
             font-size: 0.95rem;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            vertical-align: middle;
         }
 
         td {
-            padding: 1.25rem 1.5rem;
+            padding: 1.25rem 1rem;
             border-bottom: 1px solid var(--gray-light-color);
+            vertical-align: middle;
         }
 
-        th:last-child {
-            min-width: 140px;
+        /* Column widths */
+        th:nth-child(1), td:nth-child(1) {
+            width: 18%;
+            min-width: 150px;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            width: 20%;
+            min-width: 180px;
+        }
+
+        th:nth-child(3), td:nth-child(3) {
+            width: 15%;
+            min-width: 130px;
+        }
+
+        th:nth-child(4), td:nth-child(4) {
+            width: 15%;
+            min-width: 130px;
+        }
+
+        th:nth-child(5), td:nth-child(5) {
+            width: 15%;
+            min-width: 130px;
+        }
+
+        th:last-child, td:last-child {
+            width: 17%;
+            min-width: 150px;
             text-align: center;
         }
 
         td:last-child {
-            min-width: 140px;
-            white-space: normal;
+            white-space: nowrap;
             word-wrap: break-word;
         }
 
@@ -197,6 +231,10 @@
         tbody tr:hover {
             background: var(--light-color);
             transform: scale(1.01);
+        }
+
+        tbody tr.superadmin-row {
+            opacity: 0.7;
         }
 
         tbody tr:last-child td {
@@ -300,6 +338,17 @@
             font-size: 0.9rem;
         }
 
+        .btn.disabled-btn {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: all;
+        }
+
+        .btn.disabled-btn:hover {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
         /* Actions */
         .actions {
             display: flex;
@@ -388,6 +437,47 @@
             margin-top: 1.5rem;
         }
 
+        /* Permission Denied Modal */
+        .permission-denied-modal {
+            max-width: 450px;
+        }
+
+        .permission-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .permission-icon {
+            font-size: 3.5rem;
+            color: var(--danger-color);
+            margin-bottom: 1rem;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .permission-content .modal-title {
+            color: var(--danger-color);
+            margin: 1rem 0 0.75rem;
+        }
+
+        .permission-content p {
+            color: var(--gray-color);
+            margin: 0;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .sidebar {
@@ -403,6 +493,10 @@
             th, td {
                 padding: 1rem 0.75rem;
                 font-size: 0.9rem;
+            }
+
+            table {
+                min-width: 800px;
             }
         }
 
@@ -478,6 +572,19 @@
 
             .modal-content {
                 width: 95%;
+                max-width: 90vw;
+            }
+
+            .permission-denied-modal {
+                max-width: 90vw;
+            }
+
+            .permission-icon {
+                font-size: 2.5rem;
+            }
+
+            .permission-content p {
+                font-size: 0.9rem;
             }
 
             .actions {
@@ -533,6 +640,10 @@
                 font-size: 0.65rem;
             }
 
+            .btn.disabled-btn {
+                opacity: 0.6;
+            }
+
             .actions {
                 flex-direction: row;
                 gap: 0.2rem;
@@ -572,5 +683,55 @@
 
             .table-container {
                 border-radius: 10px;
+            }
+
+            /* Modal responsive */
+            .modal-content {
+                width: 95vw;
+                max-width: 95vw;
+                padding: 1.5rem 1rem;
+            }
+
+            .permission-denied-modal {
+                max-width: 95vw;
+            }
+
+            .permission-icon {
+                font-size: 2.2rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .permission-content {
+                padding: 1.5rem 0;
+            }
+
+            .permission-content .modal-title {
+                font-size: 1.2rem;
+                margin: 0.75rem 0 0.5rem;
+            }
+
+            .permission-content p {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+
+            .modal-header {
+                margin-bottom: 1rem;
+            }
+
+            .modal-actions {
+                gap: 0.5rem;
+                margin-top: 1rem;
+                flex-direction: column;
+            }
+
+            .modal-actions .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+                width: 100%;
+            }
+
+            tbody tr.superadmin-row {
+                opacity: 0.6;
             }
         }
