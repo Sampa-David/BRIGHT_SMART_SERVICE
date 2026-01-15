@@ -91,23 +91,15 @@
                     </div>
 
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label for="first_name" class="form-label">Prénom</label>
-                            <input type="text" 
-                                   id="first_name" 
-                                   name="first_name" 
-                                   class="form-input" 
-                                   value="{{ old('first_name', $user->first_name) }}" 
-                                   required>
-                        </div>
+                        
 
                         <div class="form-group">
-                            <label for="last_name" class="form-label">Nom</label>
+                            <label for="name" class="form-label">Nom</label>
                             <input type="text" 
-                                   id="last_name" 
-                                   name="last_name" 
+                                   id="name" 
+                                   name="name" 
                                    class="form-input" 
-                                   value="{{ old('last_name', $user->last_name) }}" 
+                                   value="{{ old('name', $user->name) }}" 
                                    required>
                         </div>
                     </div>
