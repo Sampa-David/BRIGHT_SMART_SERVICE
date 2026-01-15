@@ -52,7 +52,19 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://localhost'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Force HTTPS in production
+    |--------------------------------------------------------------------------
+    |
+    | When true, all generated URLs will use HTTPS. This is essential
+    | for production deployments to prevent mixed content warnings.
+    |
+    */
+
+    'force_https' => env('APP_FORCE_HTTPS', env('APP_ENV') === 'production'),
 
     /*
     |--------------------------------------------------------------------------
