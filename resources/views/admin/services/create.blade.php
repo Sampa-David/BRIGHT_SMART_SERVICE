@@ -78,7 +78,7 @@
                                         value="{{ old('name') }}"
                                         placeholder="Ex: Développement web"
                                         required
-                                        maxlength="50"
+                                        maxlength="200"
                                     >
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>Donnez un nom clair et descriptif
