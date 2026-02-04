@@ -126,8 +126,58 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-end mt-3">
-                {{ $services->links() }}
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted small">
+                    Affichage <strong>{{ $services->firstItem() ?? 0 }}</strong> à <strong>{{ $services->lastItem() ?? 0 }}</strong> 
+                    sur <strong>{{ $services->total() }}</strong> résultats
+                </div>
+                
+                <nav aria-label="Pagination" class="ms-auto">
+                    <ul class="pagination mb-0">
+                        {{-- Bouton Précédent --}}
+                        @if ($services->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">
+                                    <i class="fas fa-chevron-left me-2"></i>Précédent
+                                </span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $services->previousPageUrl() }}" rel="prev">
+                                    <i class="fas fa-chevron-left me-2"></i>Précédent
+                                </a>
+                            </li>
+                        @endif
+
+                        {{-- Liens de pages --}}
+                        @foreach ($services->getUrlRange(1, $services->lastPage()) as $page => $url)
+                            @if ($page == $services->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        {{-- Bouton Suivant --}}
+                        @if ($services->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $services->nextPageUrl() }}" rel="next">
+                                    Suivant<i class="fas fa-chevron-right ms-2"></i>
+                                </a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">
+                                    Suivant<i class="fas fa-chevron-right ms-2"></i>
+                                </span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

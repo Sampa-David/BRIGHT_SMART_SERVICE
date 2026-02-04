@@ -27,12 +27,12 @@ class ServiceSeeder extends Seeder
                 'image_url' => 'https://images.pexels.com/photos/8192840/pexels-photo-8192840.jpeg?auto=compress&cs=tinysrgb&w=800'
             ],
             [
-                'name' => 'Securite Incendie',
-                'description' => 'Solutions complètes de sécurité incendie incluant détecteurs de fumée, systèmes d\'extinction automatiques, éclairage de secours et plans d\'évacuation. Conformité aux normes de sécurité.',
+                'name' => 'Systeme de Securite Incendie',
+                'description' => 'Nous installons et maintenons des systèmes de sécurité incendie pour détecter rapidement les risques et protéger les personnes, les biens et les infrastructures. Nous protégeons vos bâtiments contre les risques d’incendie.',
                 'image_url' => 'https://images.pexels.com/photos/5633666/pexels-photo-5633666.jpeg?auto=compress&cs=tinysrgb&w=800'
             ],
             [
-                'name' => 'Telephonie IP & Interphonie',
+                'name' => 'Genie Logiciel',
                 'description' => 'Systèmes téléphoniques IP modernes avec visioconférence, interconnexion d\'établissements et interfaces d\'interphonie intelligentes. Réduction des coûts de communication et augmentation de la productivité.',
                 'image_url' => 'https://images.pexels.com/photos/3791664/pexels-photo-3791664.jpeg?auto=compress&cs=tinysrgb&w=800'
             ],
@@ -77,17 +77,16 @@ class ServiceSeeder extends Seeder
                     continue;
                 }
 
-                // Download and save image
-                $imagePath = $this->downloadAndSaveImage($serviceData['name'], $serviceData['image_url']);
+                
 
                 // Create service
                 Service::create([
                     'name' => $serviceData['name'],
                     'description' => $serviceData['description'],
-                    'image' => $imagePath,
+                    'image' => null
                 ]);
 
-                echo "✓ Service créé: {$serviceData['name']} (Image: {$imagePath})\n";
+                echo "✓ Service créé: {$serviceData['name']} (Image: {})\n";
                 $createdCount++;
 
             } catch (\Exception $e) {
@@ -101,92 +100,7 @@ class ServiceSeeder extends Seeder
         echo "⊘ Services ignorés: {$skippedCount}\n";
     }
 
-    /**
-     * Download image from URL and save it locally
-     */
-    private function downloadAndSaveImage(string $serviceName, string $imageUrl): string
-    {
-        try {
-            echo "  → Téléchargement de l'image pour: {$serviceName}...\n";
+    
 
-            // Get image from URL with better timeout and headers
-            $response = Http::withHeaders([
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Accept' => 'image/*',
-            ])->timeout(15)->get($imageUrl);
-
-            if (!$response->successful()) {
-                throw new \Exception("Réponse HTTP non-réussie: {$response->status()}");
-            }
-
-            // Generate unique filename
-            $filename = 'service_' . time() . '_' . uniqid() . '.jpg';
-            $path = 'public/uploads/' . $filename;
-
-            // Save image
-            Storage::put($path, $response->body());
-
-            // Verify file was saved
-            if (!Storage::exists($path)) {
-                throw new \Exception("Impossible de sauvegarder le fichier: {$path}");
-            }
-
-            // Verify file size (max 2MB)
-            $fileSize = Storage::size($path);
-            if ($fileSize > 2 * 1024 * 1024) {
-                Storage::delete($path);
-                throw new \Exception("Image dépasse 2MB: {$fileSize} bytes");
-            }
-
-            echo "    ✓ Image téléchargée et sauvegardée ({$fileSize} bytes)\n";
-
-            // Return relative path for database
-            return 'uploads/' . $filename;
-
-        } catch (\Exception $e) {
-            \Log::error("Erreur téléchargement image {$serviceName}: " . $e->getMessage());
-            echo "    ✗ Erreur: {$e->getMessage()}\n";
-            
-            // Create a placeholder image locally instead of failing
-            return $this->createPlaceholderImage($serviceName);
-        }
+    
     }
-
-    /**
-     * Create a placeholder image if download fails
-     */
-    private function createPlaceholderImage(string $serviceName): string
-    {
-        try {
-            // Create a simple colored placeholder image
-            $image = imagecreatetruecolor(800, 600);
-            $bgColor = imagecolorallocate($image, 27, 20, 100); // Dark blue background
-            $textColor = imagecolorallocate($image, 255, 107, 0); // Orange text
-            
-            imagefill($image, 0, 0, $bgColor);
-            
-            // Add service name to image
-            $font = __DIR__ . '/../../storage/fonts/arial.ttf';
-            if (!file_exists($font)) {
-                // Fallback to imagestring if TTF font not available
-                imagestring($image, 5, 20, 280, 'Service: ' . $serviceName, $textColor);
-            } else {
-                imagettftext($image, 30, 0, 50, 300, $textColor, $font, $serviceName);
-            }
-
-            // Save placeholder
-            $filename = 'service_placeholder_' . time() . '_' . uniqid() . '.jpg';
-            $filepath = storage_path('app/public/uploads/' . $filename);
-            
-            imagejpeg($image, $filepath, 90);
-            imagedestroy($image);
-
-            echo "    ✓ Image placeholder créée\n";
-            return 'uploads/' . $filename;
-
-        } catch (\Exception $e) {
-            echo "    ! Pas d'image, l'enregistrement continuera sans image\n";
-            return '';
-        }
-    }
-}

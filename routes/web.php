@@ -98,6 +98,12 @@ Route::middleware(['auth'])->group(function () {
         ]);
     });
 
+// Routes pour afficher et répondre aux contacts (sans préfixe admin, accessible directement)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/contacts/{contact}', [App\Http\Controllers\Admin\ContactController::class, 'show'])->name('contacts.show');
+    Route::post('/contacts/{contact}/respond', [App\Http\Controllers\Admin\ContactController::class, 'respond'])->name('contacts.respond');
+});
+
     // Routes Client
     Route::middleware([CheckUserRole::class.':client'])->group(function () {
         Route::get('/dashboard/client', [DashboardController::class, 'clientDashboard'])->name('client.dashboard');

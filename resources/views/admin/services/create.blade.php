@@ -83,7 +83,11 @@
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>Donnez un nom clair et descriptif
                                     </div>
-                                    <div class="invalid-feedback"></div>
+                                    @error('name')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <!-- Description Field -->
@@ -102,7 +106,11 @@
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>Soyez complet et précis
                                     </div>
-                                    <div class="invalid-feedback"></div>
+                                    @error('description')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <!-- Image Field -->
@@ -116,12 +124,15 @@
                                         id="image" 
                                         name="image" 
                                         accept="image/jpeg,image/png,image/jpg"
-                                        required
                                     >
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>Formats acceptés: JPG, JPEG, PNG | Taille max: 2MB
                                     </div>
-                                    <div class="invalid-feedback"></div>
+                                    @error('image')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                     <div id="imagePreview" class="mt-3"></div>
                                 </div>
 

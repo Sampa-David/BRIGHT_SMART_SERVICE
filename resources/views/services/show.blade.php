@@ -185,7 +185,7 @@
                 <ul class="service-facts">
                   <li>
                     <span class="fact-label">Durée :</span>
-                    <span class="fact-value">{{ $service->duration ?? '60' }} min</span>
+                    <span class="fact-value">{{ $service->duration ?? 'non defini' }} min</span>
                   </li>
                   <li>
                     <span class="fact-label">Délai :</span>
@@ -204,6 +204,7 @@
                 <form action="{{ route('contact.send') }}" method="POST" class="php-email-form">
                   @csrf
                   <input type="hidden" name="service_id" value="{{ $service->id }}">
+                  <input type="hidden" name="contact_method" value="email">
                   <div class="form-group mb-3">
                     <input type="text" name="name" class="form-control" id="name" placeholder="Votre nom" required>
                   </div>
@@ -212,6 +213,9 @@
                   </div>
                   <div class="form-group mb-3">
                     <input type="tel" name="phone" class="form-control" id="phone" placeholder="Votre téléphone">
+                  </div>
+                  <div class="form-group mb-3">
+                    <input type="text" name="subject" class="form-control" id="subject" placeholder="Objet de la demande" value="Demande de devis - {{ $service->name }}" required>
                   </div>
                   <div class="form-group mb-4">
                     <textarea class="form-control" name="message" rows="5" placeholder="Décrivez votre besoin..." required></textarea>
@@ -233,10 +237,10 @@
                   @foreach($otherServices as $otherService)
                   <div class="service-item">
                     <a href="{{ route('services.ServiceShow', $otherService->id) }}" class="d-flex align-items-center">
-                      <img src="{{ asset('storage/' . $otherService->image) }}" alt="{{ $otherService->name }}" class="service-thumb">
+                      <img src="{{ asset($otherService->image) }}" alt="{{ $otherService->name }}" class="service-thumb">
                       <div class="service-info">
                         <h5>{{ $otherService->name }}</h5>
-                        <span class="price">{{ number_format($otherService->price, 2, ',', ' ') }} €</span>
+                        
                       </div>
                     </a>
                   </div>

@@ -46,7 +46,7 @@ class PagesController extends Controller
             'status' => 'new'
         ]);
 
-        Mail::to(config('mail.from.address'))->send(new ContactFormMail($contact));
+        Mail::to(env('SERVICE_CLIENT_EMAIL'))->send(new ContactFormMail($contact));
 
         return redirect()->back()->with('success', 'Votre message a été envoyé avec succès !');
     }
