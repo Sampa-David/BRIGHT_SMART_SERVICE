@@ -10,7 +10,7 @@ export default defineConfig({
     ],
     build: {
         manifest: true,
-        minify: 'terser',
+        minify: 'esbuild',
         rollupOptions: {
             output: {
                 manualChunks: undefined,
