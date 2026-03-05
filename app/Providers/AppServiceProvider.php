@@ -20,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Configure asset compilation path
+        $this->configureAssets();
+        
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
             
@@ -31,5 +34,15 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             }
         }
+    }
+
+    /**
+     * Configure asset compilation for Vite.
+     */
+    private function configureAssets(): void
+    {
+        // Vite will handle asset versioning automatically
+        // In production, ensure public/build/manifest.json exists
+        // (created by: npm run build)
     }
 }
